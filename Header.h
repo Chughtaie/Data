@@ -2,3 +2,10 @@
 
 #include <iostream>
 using namespace std;
+class LOL{
+public:
+	
+	
+	int a;
+
+};
