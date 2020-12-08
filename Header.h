@@ -6,6 +6,6 @@ class LOL{
 public:
 	
 	
-	int a;
+	int a,b,c,d,e;
 
 };
