@@ -217,7 +217,34 @@ public:
 			{
 				Insert(number,temp->left);
 
-				temp = Ball(temp);
+				//temp = Ball(temp);
+
+				if (balanceFactor(temp) > 1) { //5-3-4
+					cout << "\nZone 1\n";
+					if (balanceFactor(temp->left) < 0) // 5-4-3
+					{
+						Node* ch = temp->left;
+						temp->left = temp->left->right;
+						//temp->left = ch->right;
+						ch->right = NULL;
+						temp->left->left = ch;
+					
+					}
+					
+					//Node* ch;					// 4-3-5
+					//ch = temp;
+					temp = temp->left;
+					//temp->right = ch;
+					//ch->left = NULL;
+								
+				}
+
+
+
+
+
+
+
 				return;
 			}
 			else
