@@ -3,24 +3,27 @@
 using namespace std;
 
 template<typename T>
-class BSTree {
-
-
-	class Node {
-
-	public:
-
-		T data;
-
-		Node* left;
-		Node* right;
-		Node() { left = right = NULL; data = 0;  }
-
-	};
+class Node {
 
 public:
 
-	Node* root;
+	T data;
+
+	Node* left;
+	Node* right;
+	Node() { left = right = NULL; data = 0; }
+
+};
+
+template<typename T>
+class BSTree {
+
+
+
+
+public:
+
+	Node<T>* root;
 	int height;
 	 int lh = 0, rh = 0;
 	 int h = 0, a = 0;
@@ -32,7 +35,7 @@ public:
 
 	}
 
-	Node* getRoot()
+	Node<T>* getRoot()
 	{
 		return root;
 	}
@@ -43,7 +46,7 @@ public:
 		return 1;
 	}
 
-	int baanceFactor(Node* r)
+	int baanceFactor(Node<T>* r)
 	{
 		
 		lh = 0; rh = 0;
@@ -72,7 +75,7 @@ public:
 
 	}
 
-	int balanceFactor(Node* r) {
+	int balanceFactor(Node<T>* r) {
 		
 		if (!root)
 			return -1;
@@ -87,9 +90,9 @@ public:
 		return (lh-rh);
 	}
 
-	void Height(Node* temp)
+	void Height(Node<T>* temp)
 	{
-		if (root == NULL || temp== NULL)
+		if (root == NULL || temp == NULL)
 			return;
 
 		//cout << "1";
@@ -116,22 +119,66 @@ public:
 	}
 
 
-	void Insert(T number, Node** temp)
+	void Left(Node<T>** temp) {
+	
+		cout << "\nZone 1\n";
+		if (balanceFactor((*temp)->left) < 0) // 5-4-3
+		{
+			Node<T>* ch = (*temp)->left;
+			(*temp)->left = (*temp)->left->right;
+			if((*temp)->left->left)
+				ch->right = (*temp)->left->left;
+			else 
+				ch->right = (*temp)->left->right;
+			(*temp)->left->left = ch;
+		}
+
+		Node<T>* ch;					// 4-3-5
+		ch = (*temp);
+		(*temp) = (*temp)->left;
+		ch->left = (*temp)->left->left;
+		(*temp)->right = ch;	
+	}
+
+	void Right(Node<T>** temp) {
+	
+		cout << "\nZone 2\n";
+		if (balanceFactor((*temp)->right) > 0) // 5-4-3
+		{
+			Node<T>* ch = (*temp)->right;
+			(*temp)->right = (*temp)->right->left;
+			if((*temp)->right->right)
+				ch->left = (*temp)->right->right;
+			else
+				ch->left = (*temp)->right->left;
+			(*temp)->right->right = ch;
+		}
+
+		Node<T>* ch;					// 4-3-5
+		ch = (*temp);
+		(*temp) = (*temp)->right;
+		ch->right = (*temp)->left;
+		(*temp)->left = ch;
+
+	}
+
+
+	void Insert(Node<T>* number, Node<T>** temp)
 	{
 		if (root == NULL)
 		{
-			(root) = new Node;
-			root->data = number;
+			(root) = new Node<T>;
+			root = number;
 			*temp = root;
 			return;
-		} 
+		}
 
-		if ((*temp)->data == number)
+		if ((*temp)->data == number->data)
 		{
 			cout << " \n Given number is already present in tree.\n";
 			return;
 		}
-		if ((*temp)->data > number)
+		if ((*temp)->data > number->data)
 		{
 			if ((*temp)->left != NULL)
 			{
@@ -139,78 +186,47 @@ public:
 
 
 				if (balanceFactor(*temp) == 2) { //5-3-4
-					cout << "\nZone 1\n";
-					if (balanceFactor((*temp)->left) < 0) // 5-4-3
-					{
-						Node* ch = (*temp)->left;
-						(*temp)->left = (*temp)->left->right;
-						ch->right = NULL;
-						(*temp)->left->left = ch;
-					}
-				
 					
-					Node* ch;					// 4-3-5
-					ch = (*temp);
-					(*temp) = (*temp)->left;
-					ch->left = NULL;
-					(*temp)->right = ch;
-								
+					Left(temp);
 				}
-
-
-
-
-
-
 
 				return;
 			}
 			else
 			{
-				(*temp)->left = new Node;
-				(*temp)->left->data = number;
+				cout << "\nEnter1\t" << number->data << endl;
+				//(*temp)->left = new Node<T>;
+				(*temp)->left = number;
 				return;
 			}
 		}
-		
-		if ((*temp)->data < number)
+
+		if ((*temp)->data < number->data)
 		{
 			if ((*temp)->right != NULL)
 			{
 				Insert(number, &((*temp)->right));
 
 				if (balanceFactor(*temp) == -2) { //5-3-4
-					cout << "\nZone 2\n";
-					if (balanceFactor((*temp)->right) > 0) // 5-4-3
-					{
-						Node* ch = (*temp)->right;
-						(*temp)->right = (*temp)->right->left;
-						ch->left = NULL;
-						(*temp)->right->right = ch;
-					}
-
-
-					Node* ch;					// 4-3-5
-					ch = (*temp);
-					(*temp) = (*temp)->right;
-					ch->right = NULL;
-					(*temp)->left = ch;
+					
+					Right(temp);
 
 				}
 				return;
 			}
 			else
 			{
-				(*temp)->right = new Node;
-				(*temp)->right->data = number;
+				cout << "\nEnter2\t" << number->data << endl;
+				//(*temp)->right = new Node<T>;
+				(*temp)->right = number;
 				return;
 			}
 		}
 	}
 
-	void display(Node* temp)  //traverse
+	void display(Node<T>* temp)  //traverse
 	{
-		if (temp == NULL)
+		if (temp == NULL || root == NULL)
 		{
 			return;
 		}
@@ -234,7 +250,7 @@ public:
 
 	bool retrieve(int d)
 	{
-		Node* temp = root;
+		Node<T>* temp = root;
 
 		while (temp)
 		{
@@ -259,8 +275,8 @@ public:
 			return 0;
 		}
 
-		Node* templ = root->left;
-		Node* tempr = root->right;
+		Node<T>* templ = root->left;
+		Node<T>* tempr = root->right;
 		while (templ)
 		{
 			if (templ->left)
@@ -289,7 +305,7 @@ public:
 	}
 
 
-	Node* minimum(Node* root)
+	Node<T>* minimum(Node<T>* root)
 	{
 		if (root->left != NULL)
 		{
@@ -300,7 +316,7 @@ public:
 			return root;
 		}
 	}
-	Node* del(Node* temp, int val)
+	Node<T>* del(Node<T>* temp, int val)
 	{
 		if (root == NULL)
 		{
@@ -322,21 +338,21 @@ public:
 			}
 			else if (temp->left == NULL)
 			{
-				Node* det = temp;
+				Node<T>* det = temp;
 				temp = temp->right;
 				det = NULL;
 				delete det;
 			}
 			else if (temp->right == NULL)
 			{
-				Node* det = temp;
+				Node<T>* det = temp;
 				temp = temp->left;
 				det = NULL;
 				delete det;
 			}
 			else
 			{
-				Node* det = minimum(temp->right);
+				Node<T>* det = minimum(temp->right);
 				temp->data = det->data;
 				temp->right = del(temp->right, det->data);
 			}
@@ -541,3 +557,112 @@ Node* Ball(Node *temp) {
 }
 
 */
+
+
+
+
+
+
+
+
+
+
+
+/*
+void Insert(Node<T>* number, Node<T>** temp)
+{
+	cout << "\nEnter\n";
+	if (root == NULL)
+	{
+		//root = new Node<T>;
+
+		//(temp) = &number;
+		return;
+	}
+	cout << "\nEnd\n";
+	if ((*temp)->data == number->data)
+	{
+		cout << " \n Given number is already present in tree.\n";
+		return;
+	}
+	if ((*temp)->data > number->data)
+	{
+		if ((*temp)->left != NULL)
+		{
+			cout << "\n111\n";
+			Insert(number, &((*temp)->left));
+
+
+			//if (balanceFactor(*temp) == 200) { //5-3-4
+			//	cout << "\nZone 1\n";
+			//	if (balanceFactor((*temp)->left) < 0) // 5-4-3
+			//	{
+			//		Node<T>* ch = (*temp)->left;
+			//		(*temp)->left = (*temp)->left->right;
+			//		ch->right = NULL;
+			//		(*temp)->left->left = ch;
+			//	}
+			//
+			//
+			//	Node<T>* ch;					// 4-3-5
+			//	Node<T>* right;					// 4-3-5
+			//	ch = (*temp);
+			//	(*temp) = (*temp)->left;
+			//	ch->left = NULL;
+			//	right = (*temp)->right;
+			//	(*temp)->right = ch;
+			//
+			//	//if(right != NULL)
+			//	//Insert(right,(temp));
+			//}
+			return;
+		}
+		else
+		{
+			cout << "\n222\n";
+			//(*temp)->left = new Node<T>;
+			(*temp)->left = number;
+			return;
+		}
+	}
+
+	if ((*temp)->data < number->data)
+	{
+		if ((*temp)->right != NULL)
+		{
+			cout << "\n333\n";
+			Insert(number, &((*temp)->right));
+
+			//if (balanceFactor(*temp) == -200) { //5-3-4
+			//	cout << "\nZone 2\n";
+			//	if (balanceFactor((*temp)->right) > 0) // 5-4-3
+			//	{
+			//		Node<T>* ch = (*temp)->right;
+			//		(*temp)->right = (*temp)->right->left;
+			//		ch->left = NULL;
+			//		(*temp)->right->right = ch;
+			//	}
+
+
+			//	Node<T>* ch;					// 4-3-5
+			//	Node<T>* left;					// 4-3-5
+			//	ch = (*temp);
+			//	(*temp) = (*temp)->right;
+			//	ch->right = NULL;
+			//	left = (*temp)->left;
+			//	(*temp)->left = ch;
+			//	//if(left!=NULL)
+			//	//Insert(left,(temp));
+
+			//}
+			return;
+		}
+		else
+		{
+			cout << "\n444\n";
+			//(*temp)->right = new Node<T>;
+			(*temp)->right = number;
+			return;
+		}
+	}
+}*/
