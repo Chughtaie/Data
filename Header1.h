@@ -83,7 +83,7 @@ public:
 
 		if (r->left ) lh++;
 		if (r->right) rh++;
-		//cout << "\nlh\t" << lh << "\trh\t" << rh << endl;
+		cout << "\nData = "<< r->data << "\tlh\t" << lh << "\trh\t" << rh << endl;
 		return (lh-rh);
 	}
 
@@ -116,86 +116,6 @@ public:
 	}
 
 
-	Node* LL_Rotate(Node* temp) {
-	
-		Node* ch;
-		ch = temp->left;
-		temp->left = NULL;
-		ch->right = temp;
-		return ch;
-	}
-	Node* RR_Rotate(Node* temp) {
-
-		Node* ch;
-		ch = temp->right;
-		temp->right = NULL;
-		ch->left = temp;
-		return ch;
-	}
-	Node* LR_Rotate(Node* temp) {
-
-		Node* ch = temp->left;
-		temp->left = ch->right;
-		ch->right = NULL;
-		temp->left->left = ch;
-		//ch->left = ch->right;
-		//ch->right = NULL;
-
-		return LL_Rotate(temp);
-	}
-	Node* RL_Rotate(Node* temp) {
-
-		Node* ch = temp->right;
-		temp->right = ch->left;
-		ch->left = NULL;
-		temp->right->right = ch;
-		//ch->right = ch->left;
-		//ch->left = NULL;
-
-		return RR_Rotate(temp);
-	}
-
-
-
-
-	Node* Ball(Node *temp) {
-
-		//h = 0, a = 0; Height(temp->left);
-		//cout << endl << temp->data << "\theightleft" << h;// << balanceFactor(temp) << endl;	
-		//h = 0, a = 0; Height(temp->right);
-		//cout << endl << temp->data << "\theightright" << h;// << balanceFactor(temp) << endl;
-
-		cout << "\ndata\t" << temp->data << "\t Bal \t" << balanceFactor(temp) << endl;
-		cout << &(temp)<< endl;
-		if (balanceFactor(temp) > 1) {
-			cout << "\nZone 1\n";
-			if (balanceFactor(temp->left) > 0)
-				if (temp == root) { temp = LL_Rotate(temp); root = temp;	cout << "\t1111\t" << temp->data;; }
-				else {
-					temp = LL_Rotate(temp); cout << "\t2222\t" << temp->data;
-
-					/*Node* yo = root; while (balanceFactor(yo->left) < 2) { yo = yo->left;  }
-					yo->left = RR_Rotate(temp);*/
-				}
-			else
-				if (temp == root) { temp = LR_Rotate(temp); root = temp;	cout << "\t3333\t" << temp->data;; }
-				else { temp = LR_Rotate(temp);								cout << "\t4444\t" << temp->data; }
-		}
-		else if (balanceFactor(temp) < -1) {
-			cout << "\nZone 2\n";
-			if (balanceFactor(temp->right) < 0)
-				if (temp == root) { temp = RR_Rotate(temp); root = temp; }
-				else temp = RR_Rotate(temp);
-			else
-				if (temp == root) { temp = RL_Rotate(temp);  root = temp; }
-				else temp = RL_Rotate(temp);
-
-		}
-		return temp;
-	}
-
-
-
 	void Insert(T number, Node** temp)
 	{
 		if (root == NULL)
@@ -218,7 +138,7 @@ public:
 				Insert(number, &((*temp)->left));
 
 
-				if (balanceFactor(*temp) > 1) { //5-3-4
+				if (balanceFactor(*temp) == 2) { //5-3-4
 					cout << "\nZone 1\n";
 					if (balanceFactor((*temp)->left) < 0) // 5-4-3
 					{
@@ -259,7 +179,7 @@ public:
 			{
 				Insert(number, &((*temp)->right));
 
-				if (balanceFactor(*temp) < 1) { //5-3-4
+				if (balanceFactor(*temp) == -2) { //5-3-4
 					cout << "\nZone 2\n";
 					if (balanceFactor((*temp)->right) > 0) // 5-4-3
 					{
@@ -532,3 +452,92 @@ void Insert(T d)
 
 	}
 }*/
+
+
+
+
+
+
+
+
+
+/*
+Node* LL_Rotate(Node* temp) {
+
+	Node* ch;
+	ch = temp->left;
+	temp->left = NULL;
+	ch->right = temp;
+	return ch;
+}
+Node* RR_Rotate(Node* temp) {
+
+	Node* ch;
+	ch = temp->right;
+	temp->right = NULL;
+	ch->left = temp;
+	return ch;
+}
+Node* LR_Rotate(Node* temp) {
+
+	Node* ch = temp->left;
+	temp->left = ch->right;
+	ch->right = NULL;
+	temp->left->left = ch;
+	//ch->left = ch->right;
+	//ch->right = NULL;
+
+	return LL_Rotate(temp);
+}
+Node* RL_Rotate(Node* temp) {
+
+	Node* ch = temp->right;
+	temp->right = ch->left;
+	ch->left = NULL;
+	temp->right->right = ch;
+	//ch->right = ch->left;
+	//ch->left = NULL;
+
+	return RR_Rotate(temp);
+}
+
+
+
+
+Node* Ball(Node *temp) {
+
+	//h = 0, a = 0; Height(temp->left);
+	//cout << endl << temp->data << "\theightleft" << h;// << balanceFactor(temp) << endl;
+	//h = 0, a = 0; Height(temp->right);
+	//cout << endl << temp->data << "\theightright" << h;// << balanceFactor(temp) << endl;
+
+	cout << "\ndata\t" << temp->data << "\t Bal \t" << balanceFactor(temp) << endl;
+	cout << &(temp)<< endl;
+	if (balanceFactor(temp) > 1) {
+		cout << "\nZone 1\n";
+		if (balanceFactor(temp->left) > 0)
+			if (temp == root) { temp = LL_Rotate(temp); root = temp;	cout << "\t1111\t" << temp->data;; }
+			else {
+				temp = LL_Rotate(temp); cout << "\t2222\t" << temp->data;
+
+				//Node* yo = root; while (balanceFactor(yo->left) < 2) { yo = yo->left;  }
+				//yo->left = RR_Rotate(temp);
+			}
+		else
+			if (temp == root) { temp = LR_Rotate(temp); root = temp;	cout << "\t3333\t" << temp->data;; }
+			else { temp = LR_Rotate(temp);								cout << "\t4444\t" << temp->data; }
+	}
+	else if (balanceFactor(temp) < -1) {
+		cout << "\nZone 2\n";
+		if (balanceFactor(temp->right) < 0)
+			if (temp == root) { temp = RR_Rotate(temp); root = temp; }
+			else temp = RR_Rotate(temp);
+		else
+			if (temp == root) { temp = RL_Rotate(temp);  root = temp; }
+			else temp = RL_Rotate(temp);
+
+	}
+	return temp;
+}
+
+*/
