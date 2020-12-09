@@ -196,46 +196,44 @@ public:
 
 
 
-	void Insert(T number, Node* temp)
+	void Insert(T number, Node** temp)
 	{
 		if (root == NULL)
 		{
-			root = new Node;
+			(root) = new Node;
 			root->data = number;
-			temp = root;
+			*temp = root;
 			return;
 		} 
 
-		if (temp->data == number)
+		if ((*temp)->data == number)
 		{
 			cout << " \n Given number is already present in tree.\n";
 			return;
 		}
-		if (temp->data > number)
+		if ((*temp)->data > number)
 		{
-			if (temp->left != NULL)
+			if ((*temp)->left != NULL)
 			{
-				Insert(number,temp->left);
+				Insert(number, &((*temp)->left));
 
-				//temp = Ball(temp);
 
-				if (balanceFactor(temp) > 1) { //5-3-4
+				if (balanceFactor(*temp) > 1) { //5-3-4
 					cout << "\nZone 1\n";
-					if (balanceFactor(temp->left) < 0) // 5-4-3
+					if (balanceFactor((*temp)->left) < 0) // 5-4-3
 					{
-						Node* ch = temp->left;
-						temp->left = temp->left->right;
-						//temp->left = ch->right;
+						Node* ch = (*temp)->left;
+						(*temp)->left = (*temp)->left->right;
 						ch->right = NULL;
-						temp->left->left = ch;
-					
+						(*temp)->left->left = ch;
 					}
+				
 					
-					//Node* ch;					// 4-3-5
-					//ch = temp;
-					temp = temp->left;
-					//temp->right = ch;
-					//ch->left = NULL;
+					Node* ch;					// 4-3-5
+					ch = (*temp);
+					(*temp) = (*temp)->left;
+					ch->left = NULL;
+					(*temp)->right = ch;
 								
 				}
 
@@ -249,24 +247,42 @@ public:
 			}
 			else
 			{
-				temp->left = new Node;
-				temp->left->data = number;
+				(*temp)->left = new Node;
+				(*temp)->left->data = number;
 				return;
 			}
 		}
-
-		if (temp->data < number)
+		
+		if ((*temp)->data < number)
 		{
-			if (temp->right != NULL)
+			if ((*temp)->right != NULL)
 			{
-				Insert(number,temp->right);
-				temp = Ball(temp);
+				Insert(number, &((*temp)->right));
+
+				if (balanceFactor(*temp) < 1) { //5-3-4
+					cout << "\nZone 2\n";
+					if (balanceFactor((*temp)->right) > 0) // 5-4-3
+					{
+						Node* ch = (*temp)->right;
+						(*temp)->right = (*temp)->right->left;
+						ch->left = NULL;
+						(*temp)->right->right = ch;
+					}
+
+
+					Node* ch;					// 4-3-5
+					ch = (*temp);
+					(*temp) = (*temp)->right;
+					ch->right = NULL;
+					(*temp)->left = ch;
+
+				}
 				return;
 			}
 			else
 			{
-				temp->right = new Node;
-				temp->right->data = number;
+				(*temp)->right = new Node;
+				(*temp)->right->data = number;
 				return;
 			}
 		}
