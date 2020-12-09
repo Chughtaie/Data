@@ -1,14 +1,20 @@
 #include "Header.h"
 
-int main() {
+int main()
+{
+	BSTree<int> obj;
+
+	obj.Insert(5, obj.getRoot());	obj.R_H();	cout << "\n-------------------------------------\n";
+	obj.Insert(3, obj.getRoot());	obj.R_H();	cout << "\n-------------------------------------\n";
+	obj.Insert(4, obj.getRoot());	obj.R_H();	cout << "\n-------------------------------------\n";
+	obj.Insert(2, obj.getRoot());	obj.R_H();	cout << "\n-------------------------------------\n";
+	//obj.Insert(1, obj.getRoot());	obj.R_H();	cout << "\n-------------------------------------\n";
+
+	
 
 
-
-
-	LOL obj;
-
+	obj.display(obj.root);
 
 	return 0;
-
 
 }
