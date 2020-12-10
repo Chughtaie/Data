@@ -1,5 +1,5 @@
-//#include "Header.h"
-#include "Header1.h"
+#include "Header.h"
+//#include "Header1.h"
 
 int main()
 {
@@ -40,18 +40,19 @@ int main()
 		obj.Insert(ch, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n"; obj.display(obj.root);
 	}
 
-	obj.del(obj.root, 11);
+	cout << "\n#######################################################################\n";
+
+	obj.del(&obj.root, 11);
 	
-	
-	{
+	/*{
 
 		AvlNode<int>* ch;
 		ch = new AvlNode<int>;
 		ch->data = 8;
 
 		obj.Insert(ch, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n"; obj.display(obj.root);
-	}
-
+	}*/
+	
 
 	cout << "\n\n\n";
 	obj.display(obj.root);
