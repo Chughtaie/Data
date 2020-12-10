@@ -181,7 +181,6 @@ public:
 
 
 				if (balanceFactor(*temp) == 2) { //5-3-4
-
 					if (number->data < (*temp)->left->data) // 5-4-3
 						RR(temp);
 					else
@@ -315,6 +314,27 @@ public:
 		return min;
 	}
 
+	void Bal(AvlNode<T>** temp,T number) {
+	
+		if (!(*temp)) return;
+
+		if (balanceFactor(*temp) == 2) { //5-3-4
+			if (number > (*temp)->left->data) // 5-4-3
+				RR(temp);
+			else
+				Left(temp);
+		}
+		else
+		if (balanceFactor(*temp) == -2) { //5-3-4
+				if (number < (*temp)->right->data) // 5-4-3
+					LL(temp);
+				else
+					Right(temp);
+
+			}
+	
+	}
+
 	/*AvlNode<T>* del(AvlNode<T>* temp, int val)
 	{
 		cout << "\ndel\n";
@@ -359,43 +379,45 @@ public:
 		}
 		return temp;
 	}*/
-	AvlNode<T>* del(AvlNode<T>* temp, int n) {
-		if (temp == NULL )
-			return temp;
-		if (n > temp->data)
+	AvlNode<T>* del(AvlNode<T>** temp, int n) {
+		if (*temp == NULL )
+			return *temp;
+		if (n > (*temp)->data)
 		{
-			temp->right = del(temp->right, n); //return temp;
+			(*temp)->right = del(&((*temp)->right), n);	//
+			Bal(&((*temp)->right),n);
 		}
-		else if (temp->data > n)
+		else if ((*temp)->data > n)
 		{
-			temp->left = del(temp->left, n); //return temp;
+			(*temp)->left = del(&((*temp)->left), n);	//
+			Bal(&((*temp)->left), n);
 		}
 		else {
-			if (temp->left == NULL && temp->right == NULL) {
-				delete temp;
-				temp = NULL;
+			if ((*temp)->left == NULL && (*temp)->right == NULL) {
+				delete *temp;
+				*temp = NULL;
 			}
-			else if (temp->left == NULL) {
-				AvlNode<T>* temp1 = temp;
-				temp = temp->right;
+			else if ((*temp)->left == NULL) {
+				AvlNode<T>* temp1 = *temp;
+				*temp = (*temp)->right;
 				delete temp1;
 			}
-			else if (temp->right == NULL) {
-				AvlNode<T>* temp1 = temp;
-				temp = temp->left;
+			else if ((*temp)->right == NULL) {
+				AvlNode<T>* temp1 = *temp;
+				*temp = (*temp)->left;
 				delete temp1;
 
 			}
 			else { //case  3
-				AvlNode<T>* temp1 = minimum(temp->right);
-				temp->data = temp1->data;
+				AvlNode<T>* temp1 = minimum((*temp)->right);
+				(*temp)->data = temp1->data;
 				//temp->right = 
-				temp->right = del(temp->right, temp1->data);
+				(*temp)->right = del(&((*temp)->right), temp1->data);
 
 			}
 		}
 
-		return temp;
+		return *temp;
 	}
 };
 
