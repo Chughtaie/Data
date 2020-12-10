@@ -13,7 +13,7 @@ int main()
 	obj.Insert(6, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n";
 	obj.Insert(7, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n";
 	*/
-	for (int i = 1; i <= 15; i++)
+	for (int i = 1; i <= 7; i++)
 	{
 		Node<int>* ch;
 		ch = new Node<int>;
@@ -21,7 +21,7 @@ int main()
 		
 		obj.Insert(ch, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n"; obj.display(obj.root);
 	}
-	/*
+	
 	for (int i=16;i>=12;i--)
 	{
 		Node<int>* ch;
@@ -31,7 +31,7 @@ int main()
 		obj.Insert(ch, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n"; obj.display(obj.root);
 	}
 	{Node<int>* ch;	ch = new Node<int>;	ch->data = 12;	obj.Insert(ch, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n"; obj.display(obj.root); }
-	*/
+	
 	
 	//{Node<int>* ch;	ch = new Node<int>;	ch->data = 11;	obj.Insert(ch, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n"; obj.display(obj.root); }
 	//{Node<int>* ch;	ch = new Node<int>;	ch->data = 10;	obj.Insert(ch, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n"; obj.display(obj.root); }
