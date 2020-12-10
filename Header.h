@@ -7,7 +7,7 @@ class circular_List {
 	template<typename Type>
 	struct Node {
 
-		AvlNode<Type>* node;
+		AvlTree<Type> tree;
 		Node* next = NULL;
 	};
 
@@ -18,12 +18,12 @@ public:
 
 	circular_List() { head = NULL; count = 0; }
 
-	void insert(AvlNode<Type>* n)
+	void insert(AvlTree<Type> n)
 	{
 		if (!head)
 		{
 			head = new Node<Type>;
-			head->node = n;
+			head->tree = n;
 			//cout <<"insertion 1 " <<head->node->data << endl;
 			head->next = head; count++;
 		}
@@ -36,7 +36,7 @@ public:
 			}
 
 			temp->next = new Node<Type>;
-			temp->next->node = n;
+			temp->next->tree = n;
 			//cout << "insertion 2 " << temp->next->node->data << endl;
 			temp->next->next = head; count++;
 
@@ -49,11 +49,11 @@ public:
 		Node<Type>* temp = head;
 		while (temp->next != head)
 		{
-			cout << temp->node->data << endl;
+			temp->tree.display(temp->tree.root);
 			temp = temp->next;
 		}
 
-		cout << temp->node->data << endl;
+		temp->tree.display(temp->tree.root);
 
 	}
 
