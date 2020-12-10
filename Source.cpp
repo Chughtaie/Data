@@ -30,12 +30,31 @@ int main()
 
 		obj.Insert(ch, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n"; obj.display(obj.root);
 	}
+
+	{
+		
+		AvlNode<int>* ch;
+		ch = new AvlNode<int>;
+		ch->data = 8;
+
+		obj.Insert(ch, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n"; obj.display(obj.root);
+	}
+
+	obj.del(obj.root, 11);
 	
 	
+	{
+
+		AvlNode<int>* ch;
+		ch = new AvlNode<int>;
+		ch->data = 8;
+
+		obj.Insert(ch, &obj.root);	obj.R_H();	cout << "\n-------------------------------------\n"; obj.display(obj.root);
+	}
 
 
 	cout << "\n\n\n";
-	//obj.display(obj.root);
+	obj.display(obj.root);
 
 	return 0;
 
