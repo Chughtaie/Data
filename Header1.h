@@ -45,13 +45,13 @@ public:
 		cout << "\nRoot\t" << root->data << "\t Root Height = " << h << endl;
 		return 1;
 	}
-
-	int baanceFactor(Node<T>* r)
+	/*
+	int baanceFactor(AvlNode<T>* r)
 	{
 
 		lh = 0; rh = 0;
-		Node* templ = r->left;
-		Node* tempr = r->right;
+		AvlNode<>* templ = r->left;
+		AvlNode* tempr = r->right;
 		while (templ)
 		{
 			if (templ->left)
@@ -74,8 +74,8 @@ public:
 		return lh - rh;
 
 	}
-
-	int balanceFactor(Node<T>* r) {
+	*/
+	int balanceFactor(AvlNode<T>* r) {
 
 		if (!root)
 			return -1;
@@ -90,7 +90,7 @@ public:
 		return (lh - rh);
 	}
 
-	void Height(Node<T>* temp)
+	void Height(AvlNode<T>* temp)
 	{
 		if (root == NULL || temp == NULL)
 			return;
@@ -118,7 +118,7 @@ public:
 		return;
 	}
 
-	void RR(Node<T>** temp) {
+	void RR(AvlNode<T>** temp) {
 		cout << "\tRR\n";
 		AvlNode<T>* ch;					// 4-3-5
 		ch = (*temp)->left;
@@ -128,7 +128,7 @@ public:
 
 	}
 
-	void LL(Node<T>** temp) {
+	void LL(AvlNode<T>** temp) {
 		cout << "\tLL\n";
 		AvlNode<T>* ch;
 		ch = (*temp)->right;
@@ -139,14 +139,14 @@ public:
 
 	}
 
-	void Left(Node<T>** temp) {
+	void Left(AvlNode<T>** temp) {
 		cout << "\nLeft";
 		LL(&((*temp)->left));
 		RR(temp);
 
 	}
 
-	void Right(Node<T>** temp) {
+	void Right(AvlNode<T>** temp) {
 
 		cout << "\nRight";
 		RR(&((*temp)->right));
@@ -156,7 +156,7 @@ public:
 	}
 
 
-	void Insert(Node<T>* number, Node<T>** temp)
+	void Insert(AvlNode<T>* number, AvlNode<T>** temp)
 	{
 		if (root == NULL)
 		{
@@ -223,7 +223,7 @@ public:
 		}
 	}
 
-	void display(Node<T>* temp)  //traverse
+	void display(AvlNode<T>* temp)  //traverse
 	{
 		if (temp == NULL || root == NULL)
 		{
@@ -304,20 +304,22 @@ public:
 	}
 
 
-	AvlNode<T>* minimum(Node<T>* root)
+	AvlNode<T>* minimum(AvlNode<T>* roo)
 	{
-		if (root->left != NULL)
+		if (roo->left != NULL)
 		{
-			root = minimum(root->left);
+			roo = minimum(roo->left);
 		}
 		else
 		{
-			return root;
+			return roo;
 		}
 	}
-	AvlNode<T>* del(Node<T>* temp, int val)
+
+	AvlNode<T>* del(AvlNode<T>* temp, int val)
 	{
-		if (root == NULL)
+		cout << "\ndel\n";
+		if (root == NULL || temp==NULL)
 		{
 			return root;
 		}
