@@ -3,39 +3,39 @@
 using namespace std;
 
 template<typename T>
-class Node {
+class AvlNode {
 
 public:
 
 	T data;
 
-	Node* left;
-	Node* right;
-	Node() { left = right = NULL; data = 0; }
+	AvlNode* left;
+	AvlNode* right;
+	AvlNode() { left = right = NULL; data = 0; }
 
 };
 
 template<typename T>
-class BSTree {
+class AvlTree {
 
 
 
 
 public:
 
-	Node<T>* root;
+	AvlNode<T>* root;
 	int height;
 	int lh = 0, rh = 0;
 	int h = 0, a = 0;
 
-	BSTree() {
+	AvlTree() {
 
 		root = NULL;
 		height = 0;
 
 	}
 
-	Node<T>* getRoot()
+	AvlNode<T>* getRoot()
 	{
 		return root;
 	}
@@ -120,7 +120,7 @@ public:
 
 	void RR(Node<T>** temp) {
 		cout << "\tRR\n";
-		Node<T>* ch;					// 4-3-5
+		AvlNode<T>* ch;					// 4-3-5
 		ch = (*temp)->left;
 		(*temp)->left = ch->right;
 		ch->right = (*temp);
@@ -130,7 +130,7 @@ public:
 
 	void LL(Node<T>** temp) {
 		cout << "\tLL\n";
-		Node<T>* ch;
+		AvlNode<T>* ch;
 		ch = (*temp)->right;
 		(*temp)->right = ch->left;
 		ch->left = (*temp);
@@ -160,7 +160,7 @@ public:
 	{
 		if (root == NULL)
 		{
-			(root) = new Node<T>;
+			(root) = new AvlNode<T>;
 			root = number;
 			*temp = root;
 			return;
@@ -249,7 +249,7 @@ public:
 
 	bool retrieve(int d)
 	{
-		Node<T>* temp = root;
+		AvlNode<T>* temp = root;
 
 		while (temp)
 		{
@@ -274,8 +274,8 @@ public:
 			return 0;
 		}
 
-		Node<T>* templ = root->left;
-		Node<T>* tempr = root->right;
+		AvlNode<T>* templ = root->left;
+		AvlNode<T>* tempr = root->right;
 		while (templ)
 		{
 			if (templ->left)
@@ -304,7 +304,7 @@ public:
 	}
 
 
-	Node<T>* minimum(Node<T>* root)
+	AvlNode<T>* minimum(Node<T>* root)
 	{
 		if (root->left != NULL)
 		{
@@ -315,7 +315,7 @@ public:
 			return root;
 		}
 	}
-	Node<T>* del(Node<T>* temp, int val)
+	AvlNode<T>* del(Node<T>* temp, int val)
 	{
 		if (root == NULL)
 		{
@@ -337,21 +337,21 @@ public:
 			}
 			else if (temp->left == NULL)
 			{
-				Node<T>* det = temp;
+				AvlNode<T>* det = temp;
 				temp = temp->right;
 				det = NULL;
 				delete det;
 			}
 			else if (temp->right == NULL)
 			{
-				Node<T>* det = temp;
+				AvlNode<T>* det = temp;
 				temp = temp->left;
 				det = NULL;
 				delete det;
 			}
 			else
 			{
-				Node<T>* det = minimum(temp->right);
+				AvlNode<T>* det = minimum(temp->right);
 				temp->data = det->data;
 				temp->right = del(temp->right, det->data);
 			}
