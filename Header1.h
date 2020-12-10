@@ -158,6 +158,7 @@ public:
 
 	void Insert(AvlNode<T>* number, AvlNode<T>** temp)
 	{
+		//cout << "\nEntered\n";
 		if (root == NULL)
 		{
 			(root) = new AvlNode<T>;
@@ -304,19 +305,17 @@ public:
 	}
 
 
-	AvlNode<T>* minimum(AvlNode<T>* roo)
+	AvlNode<T>* minimum(AvlNode<T>* min)
 	{
-		if (roo->left != NULL)
-		{
-			roo = minimum(roo->left);
-		}
-		else
-		{
-			return roo;
-		}
+		
+
+		while (min && min->left != NULL)
+			min = min->left;
+
+		return min;
 	}
 
-	AvlNode<T>* del(AvlNode<T>* temp, int val)
+	/*AvlNode<T>* del(AvlNode<T>* temp, int val)
 	{
 		cout << "\ndel\n";
 		if (root == NULL || temp==NULL)
@@ -358,6 +357,44 @@ public:
 				temp->right = del(temp->right, det->data);
 			}
 		}
+		return temp;
+	}*/
+	AvlNode<T>* del(AvlNode<T>* temp, int n) {
+		if (temp == NULL )
+			return temp;
+		if (n > temp->data)
+		{
+			temp->right = del(temp->right, n); //return temp;
+		}
+		else if (temp->data > n)
+		{
+			temp->left = del(temp->left, n); //return temp;
+		}
+		else {
+			if (temp->left == NULL && temp->right == NULL) {
+				delete temp;
+				temp = NULL;
+			}
+			else if (temp->left == NULL) {
+				AvlNode<T>* temp1 = temp;
+				temp = temp->right;
+				delete temp1;
+			}
+			else if (temp->right == NULL) {
+				AvlNode<T>* temp1 = temp;
+				temp = temp->left;
+				delete temp1;
+
+			}
+			else { //case  3
+				AvlNode<T>* temp1 = minimum(temp->right);
+				temp->data = temp1->data;
+				//temp->right = 
+				temp->right = del(temp->right, temp1->data);
+
+			}
+		}
+
 		return temp;
 	}
 };
