@@ -46,36 +46,7 @@ public:
 		cout << "\nRoot\t" << root->data << "\t Root Height = " << h << endl;
 		return 1;
 	}
-	/*
-	int baanceFactor(AvlNode<T>* r)
-	{
 
-		lh = 0; rh = 0;
-		AvlNode<>* templ = r->left;
-		AvlNode* tempr = r->right;
-		while (templ)
-		{
-			if (templ->left)
-				templ = templ->left;
-			else
-				templ = templ->right;
-			lh++;
-
-		}
-		while (tempr)
-		{
-			if (tempr->left)
-				tempr = tempr->left;
-			else
-				tempr = tempr->right;
-			rh++;
-
-		}
-
-		return lh - rh;
-
-	}
-	*/
 	int balanceFactor(AvlNode<T>* r) {
 
 		if (!root)
@@ -336,50 +307,6 @@ public:
 	
 	}
 
-	/*AvlNode<T>* del(AvlNode<T>* temp, int val)
-	{
-		cout << "\ndel\n";
-		if (root == NULL || temp==NULL)
-		{
-			return root;
-		}
-		else if (temp->data > val)
-		{
-			temp->left = del(temp->left, val);
-		}
-		else if (temp->data < val)
-		{
-			temp->right = del(temp->right, val);
-		}
-		else
-		{
-			if (temp->left == NULL && temp->right == NULL)
-			{
-				root = NULL;
-			}
-			else if (temp->left == NULL)
-			{
-				AvlNode<T>* det = temp;
-				temp = temp->right;
-				det = NULL;
-				delete det;
-			}
-			else if (temp->right == NULL)
-			{
-				AvlNode<T>* det = temp;
-				temp = temp->left;
-				det = NULL;
-				delete det;
-			}
-			else
-			{
-				AvlNode<T>* det = minimum(temp->right);
-				temp->data = det->data;
-				temp->right = del(temp->right, det->data);
-			}
-		}
-		return temp;
-	}*/
 	AvlNode<T>* del(AvlNode<T>** temp, int n) {
 		if (*temp == NULL )
 			return *temp;
@@ -422,3 +349,51 @@ public:
 	}
 };
 
+
+
+
+
+/*AvlNode<T>* del(AvlNode<T>* temp, int val)
+{
+	cout << "\ndel\n";
+	if (root == NULL || temp==NULL)
+	{
+		return root;
+	}
+	else if (temp->data > val)
+	{
+		temp->left = del(temp->left, val);
+	}
+	else if (temp->data < val)
+	{
+		temp->right = del(temp->right, val);
+	}
+	else
+	{
+		if (temp->left == NULL && temp->right == NULL)
+		{
+			root = NULL;
+		}
+		else if (temp->left == NULL)
+		{
+			AvlNode<T>* det = temp;
+			temp = temp->right;
+			det = NULL;
+			delete det;
+		}
+		else if (temp->right == NULL)
+		{
+			AvlNode<T>* det = temp;
+			temp = temp->left;
+			det = NULL;
+			delete det;
+		}
+		else
+		{
+			AvlNode<T>* det = minimum(temp->right);
+			temp->data = det->data;
+			temp->right = del(temp->right, det->data);
+		}
+	}
+	return temp;
+}*/
