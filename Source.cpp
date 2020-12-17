@@ -163,7 +163,16 @@ int main()
 
 		system_mach.insert(to_string(arr[i]), t);
 	}
+	int *count = new int[n];
 
+	string s = "Foxxy";
+
+	AvlNode<string>* var = new AvlNode<string>;
+	var->data = s;
+	var->key = Hash(s);
+	var->mach = Machine(var->key,to_string(n));
+	system_mach.Add(var);
+	//var.
 
 	system_mach.display();
 
