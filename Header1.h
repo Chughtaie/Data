@@ -10,12 +10,14 @@ public:
 
 	T data;
 	T path;
-	T value;
+	T line_no;
 	T key;
+	T mach;
+
 
 	AvlNode* left;
 	AvlNode* right;
-	AvlNode() { left = right = NULL; data = 0; path = value = key = ""; }
+	AvlNode() { left = right = NULL; data = 0; path = line_no = key = ""; }
 
 };
 
