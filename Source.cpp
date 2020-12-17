@@ -109,7 +109,7 @@ string Machine(string val, string max) {
 
 int main()
 {
-
+	srand(time(0));
 
 
 	int n = 0, idspace=0;
@@ -123,7 +123,7 @@ int main()
 
 
 	int p = pow(2, idspace);
-	cout << "\nPower = " << p << endl;
+	//cout << "\nPower = " << p << endl;
 	int* arr = new int[n];
 
 	bool check = 1;
@@ -131,7 +131,7 @@ int main()
 
 	for (int i = 0; i < n;)
 	{
-		srand(time(0));
+		
 		temp = 1 + rand() % p;
 		check = 1; j = 0;
 
@@ -147,6 +147,22 @@ int main()
 			arr[i] = temp; i++;
 		}
 
+	}
+
+	int tempo;
+
+	for (int i = 0; i < n; i++)
+	{
+
+		for (int j = i + 1; j < n; j++)
+		{
+			if (arr[i] > arr[j])
+			{
+				tempo = arr[i];
+				arr[i] = arr[j];
+				arr[j] = tempo;
+			}
+		}
 	}
 
 	for (int i = 0; i < n; i++)
@@ -184,4 +200,4 @@ int main()
 	return 0;
 	
 	
-	}
+}
