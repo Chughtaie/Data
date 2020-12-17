@@ -1,6 +1,7 @@
 #include<iostream>
 #include<cstring>
 #include<string>
+#include <fstream>
 using namespace std;
 
 template<typename T>
@@ -8,11 +9,11 @@ class AvlNode {
 
 public:
 
-	T data;
-	T path;
-	T line_no;
-	T key;
-	T mach;
+	T data;		//Foxxy
+	T path;		//file1
+	T line_no;	//line no
+	T key;		//foxxy ki hash
+	T mach;		//machine no.
 
 
 	AvlNode* left;
@@ -48,7 +49,7 @@ public:
 	int R_H() {
 		h = 0, a = 0;
 		Height(root);
-		cout << "\nRoot\t" << root->data << "\t Root Height = " << h << endl;
+		//cout << "\nRoot\t" << root->data << "\t Root Height = " << h << endl;
 		return 1;
 	}
 
@@ -63,7 +64,7 @@ public:
 
 		if (r->left) lh++;
 		if (r->right) rh++;
-		cout << "\nData = " << r->data << "\tlh\t" << lh << "\trh\t" << rh << endl;
+		//cout << "\nData = " << r->data << "\tlh\t" << lh << "\trh\t" << rh << endl;
 		return (lh - rh);
 	}
 
@@ -96,7 +97,7 @@ public:
 	}
 
 	void RR(AvlNode<T>** temp) {
-		cout << "\tRR\n";
+		//cout << "\tRR\n";
 		AvlNode<T>* ch;					// 4-3-5
 		ch = (*temp)->left;
 		(*temp)->left = ch->right;
@@ -106,7 +107,7 @@ public:
 	}
 
 	void LL(AvlNode<T>** temp) {
-		cout << "\tLL\n";
+		//cout << "\tLL\n";
 		AvlNode<T>* ch;
 		ch = (*temp)->right;
 		(*temp)->right = ch->left;
@@ -117,7 +118,7 @@ public:
 	}
 
 	void Left(AvlNode<T>** temp) {
-		cout << "\nLeft";
+		//cout << "\nLeft";
 		LL(&((*temp)->left));
 		RR(temp);
 
@@ -125,7 +126,7 @@ public:
 
 	void Right(AvlNode<T>** temp) {
 
-		cout << "\nRight";
+		//cout << "\nRight";
 		RR(&((*temp)->right));
 		LL(temp);
 
@@ -144,13 +145,13 @@ public:
 			return;
 		}
 
-		else if ((*temp)->data == number->data)
+		else if ((*temp)->key == number->key)
 		{
 			cout << " \n Given number is already present in tree.\n";
 			return;
 		}
 
-		else if ((*temp)->data > number->data)
+		else if ((*temp)->key > number->key)
 		{
 			if ((*temp)->left != NULL)
 			{
@@ -158,7 +159,7 @@ public:
 
 
 				if (balanceFactor(*temp) == 2) { //5-3-4
-					if (number->data < (*temp)->left->data) // 5-4-3
+					if (number->key < (*temp)->left->key) // 5-4-3
 						RR(temp);
 					else
 						Left(temp);
@@ -168,21 +169,21 @@ public:
 			}
 			else
 			{
-				cout << "\nEnter\t" << number->data << endl;
+				//cout << "\nEnter Left\t" << number->key << endl;
 				//(*temp)->left = new Node<T>;
 				(*temp)->left = number;
 				return;
 			}
 		}
 
-		else if ((*temp)->data < number->data)
+		else if ((*temp)->key < number->key)
 		{
 			if ((*temp)->right != NULL)
 			{
 				Insert(number, &((*temp)->right));
 
 				if (balanceFactor(*temp) == -2) { //5-3-4
-					if (number->data > (*temp)->right->data) // 5-4-3
+					if (number->key > (*temp)->right->key) // 5-4-3
 						LL(temp);
 					else
 						Right(temp);
@@ -192,7 +193,7 @@ public:
 			}
 			else
 			{
-				cout << "\nEnter\t" << number->data << endl;
+				//cout << "\nEnter Right\t" << number->key << endl;
 				//(*temp)->right = new Node<T>;
 				(*temp)->right = number;
 				return;
@@ -207,8 +208,12 @@ public:
 			return;
 		}
 
-		cout << temp->data << ',';	// left root right
-		cout << temp << endl;
+		cout << "\ndata\t" <<  temp->data << '\n';	// left root right
+		cout << "path\t" << temp->path << '\n';	// left root right
+		cout << "Line no\t" << temp->line_no << '\n';	// left root right
+		cout << "mach\t" << temp->mach << '\n';	// left root right
+		cout << "key\t" << temp->key << '\n';	// left root right
+		//cout << temp << endl;
 		if (temp->left != NULL)
 		{
 			display(temp->left);    //LVR display
