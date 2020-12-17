@@ -12,7 +12,7 @@ struct Node {
 };
 
 
-class Table {
+class Routing_Table { // doubly link list
 
 
 
@@ -23,7 +23,7 @@ public:
 	Node* head;
 	int count;
 
-	Table() { head =  NULL; count = 0; }
+	Routing_Table() { head =  NULL; count = 0; }
 
 	void insert(Node* n)
 	{
@@ -116,19 +116,16 @@ public:
 
 
 template<typename Type>
-class Ring {
+class Ring_DHT {
 
 	template<typename Type>
 	struct Machine {
-		string path;
-		string value;
-		string key;
-
+		
 		Table Fht;
 		AvlTree<Type> Tree;
-		Machine* next = NULL;
+		Machine* next;
 
-		Machine() { path = ""; value = ""; key = ""; }
+		Machine() { next = NULL; }
 	};
 
 
@@ -136,7 +133,7 @@ class Ring {
 	int count;
 public:
 
-	Ring() { head = NULL; count = 0; }
+	Ring_DHT() { head = NULL; count = 0; }
 
 	void insert(AvlTree<Type> n)
 	{
