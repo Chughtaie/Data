@@ -418,8 +418,9 @@ string  word(string str, int o, int p = -1) {
 
 int Total(string a) {
 	int o = 0;
+	//cout << "\na" << a << "\n";
 	for (int i = 0; a[i] != '\0'; i++)
-		if (a[i] == ' ' && a[i - 1] != ' ') o++;
+		if (a[i] == ' ' && a[i + 1] != ' ') o++;
 	return o + 1;
 }
 
@@ -505,24 +506,31 @@ int main()
 
 
 
+	//=========		Inputs of Strings	 ==============
 
 
 
-
+	
 	std::string str = "0";
 	do {
+		std::string strin = "";
 		std::cout << "\n\nEnter your shit....-1 to exit\n\ninput = ";
 		//getline(cin, a);
-		std::cin >> str;
-		//std::cout << "\nHash = ";
-		std::size_t str_hash = std::hash<std::string>{}(str);
+		std::getline(cin,str);
+		int  tot = Total(str);
+		//cout << "\nTotal" << tot << "\n";
+		for (int i = 0; i < tot; i++) {
+			//cout << word(str,i) << "\t";
+			strin += word(str, i);			  
+		}	  
+		std::cout << "\nString" << strin << "\n";
+		std::size_t str_hash = std::hash<std::string>{}(strin);
 		//str = str_hash;
-		std::cout << "hash(" << std::quoted(str) << ") = " << str_hash << '\n';
+		std::cout << "hash(" << std::quoted(strin) << ") = " << str_hash << '\n';
 		long int val = str_hash % p;
 		cout  << val << endl;
-		
-	} while (str != "-1");
-	
+			  
+	}while (str != "-1");
 	
 	
 	
