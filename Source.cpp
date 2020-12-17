@@ -104,7 +104,9 @@ string Hash(string str) {
 
 
 string Machine(string val, string max) {
-	return to_string(stoi(val) / stoi(max));
+	//cout << "\n\nbfhfbheb \t"
+	val[9] = '\0';
+	return to_string(stoi(val) % stoi(max));
 } 
 
 int main()
@@ -119,6 +121,7 @@ int main()
 	n = stoi(no);
 	cout << "enter identifier space\n";
 	getline(cin, no);
+	cout << "\n\n";
 	idspace = stoi(no);
 
 
@@ -180,16 +183,19 @@ int main()
 		system_mach.insert(to_string(arr[i]), t);
 	}
 	int *count = new int[n];
+	string s = "0";
+	while (s != "-1") {
+		cout << "\nEnter The shit you want to store!!\n";
+		std::getline(cin, s);
 
-	string s = "Foxxy";
-
-	AvlNode<string>* var = new AvlNode<string>;
-	var->data = s;
-	var->key = Hash(s);
-	var->mach = Machine(var->key,to_string(n));
-	system_mach.Add(var);
-	//var.
-
+		AvlNode<string>* var = new AvlNode<string>;
+		var->data = s;
+		var->key = Hash(s);
+		var->mach = Machine(var->key, to_string(n));
+		//cout << var->mach << "\t" << var->key << "\t" << n << endl;;
+		system_mach.Add(var);
+		//var.
+	}
 	system_mach.display();
 
 
