@@ -121,7 +121,9 @@ class Ring_DHT {
 	template<typename Type>
 	struct Machine {
 		
-		Table Fht;
+		Type id;
+		Type hashed_id;
+		Routing_Table Fht;
 		AvlTree<Type> Tree;
 		Machine* next;
 
@@ -134,13 +136,16 @@ class Ring_DHT {
 public:
 
 	Ring_DHT() { head = NULL; count = 0; }
+	
+	
 
-	void insert(AvlTree<Type> n)
+	void insert(Type idd,Type hid)
 	{
 		if (!head)
 		{
 			head = new Machine<Type>;
-			head->tree = n;
+			head->id = idd;
+			head->hashed_id = hid;
 			//cout <<"insertion 1 " <<head->node->data << endl;
 			head->next = head; count++;
 		}
@@ -153,7 +158,8 @@ public:
 			}
 
 			temp->next = new Machine<Type>;
-			temp->next->tree = n;
+			temp->next->id = idd;
+			temp->next->hashed_id = hid;
 			//cout << "insertion 2 " << temp->next->node->data << endl;
 			temp->next->next = head; count++;
 
@@ -164,13 +170,17 @@ public:
 	void display()
 	{
 		Machine<Type>* temp = head;
-		while (temp->next != head)
-		{
-			temp->tree.display(temp->tree.root);
+		do{
+			//temp->tree.display(temp->tree.root);
+			cout << "simple id " << temp->id << endl;
+			cout<< "hashed id " << temp->hashed_id << endl;
 			temp = temp->next;
-		}
+		} while (temp->next != head);
 
-		temp->tree.display(temp->tree.root);
+		cout << "simple id " << temp->id << endl;
+		cout << "hashed id " << temp->hashed_id << endl;
+		//temp->tree.display(temp->tree.root);
+
 
 	}
 
