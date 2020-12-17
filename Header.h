@@ -121,24 +121,55 @@ class Ring_DHT {
 	template<typename Type>
 	struct Machine {
 		
+	public:
 		Type id;
 		Type hashed_id;
 		Routing_Table Fht;
 		AvlTree<Type> Tree;
 		Machine* next;
-
+		int count = 0;
+		int tot = 0;
 		Machine() { next = NULL; }
 
+		/*
+		string File(string key)
+		{
+			string name = "";
 
+			if (count == 100 || count == 0) {
+				tot++;
+				name = "Treefile_Machine_" + id + "_" + to_string(tot) + ".txt";
+				ofstream file(name);
+				file << key << endl;
+				count = 1;
+			}
+			else {
+
+				fstream file;
+				name = "Treefile_Machine_" + id + "_" + to_string(tot) + ".txt";
+				file.open(name, std::ios::app);
+				file << key << endl;
+				file.close();
+				count++;
+			}
+			return name;
+		}
+		*/
 		bool Add(AvlNode<Type>* var) {		
-			Tree.Insert(var,&(Tree.root));	
+			string s;// = File((var->data + "    " + var->key));
+			var->path = s;
+			var->line_no = to_string(count);
+			Tree.Insert(var, &(Tree.root));
 			return true;
 		}
+
+		
+		
 	};
 
 
 	Machine<Type>* head;
-	int count;
+	
 public:
 
 	Ring_DHT() { head = NULL; count = 0; }
@@ -166,8 +197,9 @@ public:
 		}
 	}
 	
+	
 
-	void insert(Type idd,Type hid)
+	void insert(Type idd, Type hid)
 	{
 		if (!head)
 		{
@@ -192,7 +224,6 @@ public:
 			temp->next->next = head; count++;
 
 		}
-
 	}
 
 	void display()
@@ -201,13 +232,17 @@ public:
 
 		do{
 			//temp->tree.display(temp->tree.root);
-			cout << "simple id " << temp->id << endl;
+			cout << "\n\nsimple id " << temp->id << endl;
 			cout<< "hashed id " << temp->hashed_id << endl;
+			temp->Tree.display(temp->Tree.root);
+			//cout << endl << endl;
 			temp = temp->next;
 		} while (temp->next != head);
 
-		cout << "simple id " << temp->id << endl;
+		cout << "\n\nsimple id " << temp->id << endl;
 		cout << "hashed id " << temp->hashed_id << endl;
+		temp->Tree.display(temp->Tree.root);
+		cout << endl << endl;
 		//temp->tree.display(temp->tree.root);
 
 
