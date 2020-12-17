@@ -131,7 +131,8 @@ class Ring_DHT {
 
 
 		bool Add(AvlNode<Type>* var) {		
-			Tree.Insert(var);		
+			Tree.Insert(var,&(Tree.root));	
+			return true;
 		}
 	};
 
@@ -147,7 +148,7 @@ public:
 	
 		if (head->id == var->mach)
 		{
-			head.Add(var);
+			head->Add(var);
 			return true;
 		}
 		else {
@@ -157,8 +158,8 @@ public:
 			while (temp->id < var->mach && temp->next != head) 			
 				temp = temp->next;
 			if (temp->id >= var->mach)
-				temp.Add(var);
-			else head.Add(var);
+				temp->Add(var);
+			else head->Add(var);
 			
 			return 1;
 		
@@ -197,6 +198,7 @@ public:
 	void display()
 	{
 		Machine<Type>* temp = head;
+
 		do{
 			//temp->tree.display(temp->tree.root);
 			cout << "simple id " << temp->id << endl;
