@@ -128,6 +128,11 @@ class Ring_DHT {
 		Machine* next;
 
 		Machine() { next = NULL; }
+
+
+		bool Add(AvlNode<Type>* var) {		
+			Tree.Insert(var);		
+		}
 	};
 
 
@@ -137,6 +142,28 @@ public:
 
 	Ring_DHT() { head = NULL; count = 0; }
 	
+
+	bool Add(AvlNode<Type>* var) {
+	
+		if (head->id == var->mach)
+		{
+			head.Add(var);
+			return true;
+		}
+		else {
+		
+			Machine<Type>* temp = head;
+
+			while (temp->id < var->mach && temp->next != head) 			
+				temp = temp->next;
+			if (temp->id >= var->mach)
+				temp.Add(var);
+			else head.Add(var);
+			
+			return 1;
+		
+		}
+	}
 	
 
 	void insert(Type idd,Type hid)
