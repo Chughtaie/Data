@@ -9,10 +9,13 @@ class AvlNode {
 public:
 
 	T data;
+	T path;
+	T value;
+	T key;
 
 	AvlNode* left;
 	AvlNode* right;
-	AvlNode() { left = right = NULL; data = 0; }
+	AvlNode() { left = right = NULL; data = 0; path = value = key = ""; }
 
 };
 
