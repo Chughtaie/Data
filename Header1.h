@@ -17,7 +17,7 @@ public:
 
 	AvlNode* left;
 	AvlNode* right;
-	AvlNode() { left = right = NULL; data = 0; path = line_no = key = ""; }
+	AvlNode() { left = right = NULL; data = "0"; path = line_no = key = ""; }
 
 };
 
