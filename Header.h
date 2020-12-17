@@ -131,7 +131,7 @@ class Ring_DHT {
 		int tot = 0;
 		Machine() { next = NULL; }
 
-		/*
+		
 		string File(string key)
 		{
 			string name = "";
@@ -141,6 +141,7 @@ class Ring_DHT {
 				name = "Treefile_Machine_" + id + "_" + to_string(tot) + ".txt";
 				ofstream file(name);
 				file << key << endl;
+				file.close();
 				count = 1;
 			}
 			else {
@@ -154,9 +155,9 @@ class Ring_DHT {
 			}
 			return name;
 		}
-		*/
+		
 		bool Add(AvlNode<Type>* var) {		
-			string s;// = File((var->data + "    " + var->key));
+			string s = File((var->data + "    " + var->key));
 			var->path = s;
 			var->line_no = to_string(count);
 			Tree.Insert(var, &(Tree.root));
@@ -172,7 +173,7 @@ class Ring_DHT {
 	
 public:
 
-	Ring_DHT() { head = NULL; count = 0; }
+	Ring_DHT() { head = NULL; }
 	
 
 	bool Add(AvlNode<Type>* var) {
@@ -195,6 +196,7 @@ public:
 			return 1;
 		
 		}
+
 	}
 	
 	
@@ -207,7 +209,7 @@ public:
 			head->id = idd;
 			head->hashed_id = hid;
 			//cout <<"insertion 1 " <<head->node->data << endl;
-			head->next = head; count++;
+			head->next = head; //count++;
 		}
 		else
 		{
@@ -221,7 +223,7 @@ public:
 			temp->next->id = idd;
 			temp->next->hashed_id = hid;
 			//cout << "insertion 2 " << temp->next->node->data << endl;
-			temp->next->next = head; count++;
+			temp->next->next = head; //count++;
 
 		}
 	}
@@ -245,12 +247,6 @@ public:
 		cout << endl << endl;
 		//temp->tree.display(temp->tree.root);
 
-
-	}
-
-	int getcount() {
-
-		return count;
 	}
 
 };
