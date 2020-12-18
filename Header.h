@@ -15,10 +15,11 @@ class Routing_Table { // doubly link list
 
 
 	struct Node {
-		string mech;
+		string mech;	
 		string data;
-		Jh* ptr;
+		Jh* ptr = NULL;
 		int val;
+
 		Node* next;
 		Node* prev;
 
@@ -32,7 +33,7 @@ public:
 
 	Routing_Table() { head =  NULL; count = 0; }
 
-	void insert(int id,string space,string h)
+	void insert(int id,string space,string h,Jh* p = NULL)
 	{
 		if (!head)
 		{
@@ -40,6 +41,7 @@ public:
 			head->val = id;
 			head->data = space;
 			head->mech = h;
+			head->ptr = p;
 		}
 		else
 		{
@@ -56,6 +58,7 @@ public:
 			temp->next->data = space;
 			temp->next->val = id;// (temp->val + 1);
 			temp->next->mech = h;
+			temp->next->ptr = p;
 			//cout << "insertion 2 " << temp->next->node->data << endl;
 			//temp->next->next = head; count++;
 
@@ -121,18 +124,24 @@ public:
 //================ RING ====================
 
 template<typename Type>
-struct Machine:public Jh {
+class Machine  {
 
 public:
 	Type id;
 	Type hashed_id;
 	Routing_Table Fht;
 	AvlTree<Type> Tree;
+
 	Machine* next;
+
 	int count = 0;
 	int tot = 0;
+
 	Machine() { next = NULL; }
 
+	void lol() {
+		cout << endl;
+	}
 
 	string File(string key)
 	{
@@ -140,7 +149,7 @@ public:
 
 		if (count == 100 || count == 0) {
 			tot++;
-			name = "Treefile_Machine_" + id + "_" + to_string(tot) + ".txt";
+			name = "Treefile_Machine_" + id + "_(" + to_string(tot) + ").txt";
 			ofstream file(name);
 			file << key << endl;
 			file.close();
@@ -149,7 +158,7 @@ public:
 		else {
 
 			fstream file;
-			name = "Treefile_Machine_" + id + "_" + to_string(tot) + ".txt";
+			name = "Treefile_Machine_" + id + "_(" + to_string(tot) + ").txt";
 			file.open(name, std::ios::app);
 			file << key << endl;
 			file.close();
@@ -184,6 +193,7 @@ public:
 
 	Machine<Type>* head;
 	int lol = 0;
+
 public:
 
 	Ring_DHT() { head = NULL; }
@@ -260,6 +270,17 @@ public:
 
 
 
+	Machine<Type>* Get_ptr(string str) {
+	
+		Machine<string>* temp = head;
+		while (temp) {
+		
+			if (temp->id == str) return temp;
+		}
+	//return ;	
+	}
+
+
 	void Set(int* arr, int id) {
 
 		Machine<Type>* temp = head;
@@ -268,7 +289,7 @@ public:
 
 			for (int i = 1; i <= id; i++) {	//
 				string h = to_string((int(stoi(temp->id) + pow(2, i - 1))) % int(pow(2, id)));
-				temp->Fht.insert(i, Succ(h),h);
+				temp->Fht.insert(i, Succ(h), h);// , Get_ptr(Succ(h)));
 			}
 			temp = temp->next;
 		}
