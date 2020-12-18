@@ -135,7 +135,7 @@ int main()
 	for (int i = 0; i < n;)
 	{
 		
-		temp = 1 + rand() % p;
+		temp = 0 + rand() % (p-1);
 		check = 1; j = 0;
 
 		while (j < i)
@@ -182,12 +182,18 @@ int main()
 
 		system_mach.insert(to_string(arr[i]), t);
 	}
-	int *count = new int[n];
-	string s = "0";
-	while (s != "-1") {
-		cout << "\nEnter The shit you want to store!!\n";
-		std::getline(cin, s);
+	system_mach.Set(arr,idspace);
 
+
+	
+
+
+
+	string s = "0";
+	while (1) {
+		cout << "\nEnter The shit you want to store!!\n";
+		std::getline(cin, s);	
+		if (s == "-1") break;	
 		AvlNode<string>* var = new AvlNode<string>;
 		var->data = s;
 		var->key = Hash(s);
