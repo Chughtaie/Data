@@ -1,23 +1,28 @@
 #include "Header1.h"
 //#include <iostream>
 //using namespace std;
-
-
-class Jh {
+template<typename Type>
+class LoL {
 
 public:
-	virtual void lol()=0;
+	void lol() { cout << endl; }
+
+	
 };
 
 
+
+
+template<typename Type>
 class Routing_Table { // doubly link list
 
 
-
+	template<typename Type>
 	struct Node {
-		string mech;	
+		string mech;
 		string data;
-		Jh* ptr = NULL;
+		//Machine<Type>* ptr = NULL;
+		LoL<Type>* ptr;
 		int val;
 
 		Node* next;
@@ -28,16 +33,18 @@ class Routing_Table { // doubly link list
 
 public:
 
-	Node* head;
+	Node<Type>* head;
 	int count;
 
-	Routing_Table() { head =  NULL; count = 0; }
+	Routing_Table() { head = NULL; count = 0; }
 
-	void insert(int id,string space,string h,Jh* p = NULL)
+	void insert(int id, string space, string h, LoL<Type>* p = NULL)
 	{
+
+		cout << "\nPROGRESS\n";
 		if (!head)
 		{
-			head = new Node;
+			head = new Node<Type>;
 			head->val = id;
 			head->data = space;
 			head->mech = h;
@@ -45,7 +52,7 @@ public:
 		}
 		else
 		{
-			Node* temp = head;
+			Node<Type>* temp = head;
 
 			while (temp->next != NULL)
 			{
@@ -53,7 +60,7 @@ public:
 			}
 
 			//temp->next = new Node;
-			temp->next = new Node;
+			temp->next = new Node<Type>;
 			temp->next->prev = temp;
 			temp->next->data = space;
 			temp->next->val = id;// (temp->val + 1);
@@ -68,10 +75,10 @@ public:
 
 	void display()
 	{
-		Node* temp = head;
+		Node<Type>* temp = head;
 		while (temp != NULL)
 		{
-			cout << "val data mech\t" <<temp->val << "\t" << temp->data << "\t" << temp->mech <<  endl;
+			cout << "val data mech\t" << temp->val << "\t" << temp->data << "\t" << temp->mech << endl;
 			temp = temp->next;
 		}
 		//temp->tree.display(temp->tree.root);
@@ -80,9 +87,9 @@ public:
 
 
 	bool Delete(Node* n) {
-	
-		Node* temp = head;
-		Node* temp1;
+
+		Node<Type>* temp = head;
+		Node<Type>* temp1;
 
 		if (head->data == n->data)
 		{
@@ -92,21 +99,21 @@ public:
 			temp1 = NULL;
 			return true;
 		}
-		else 
-		while (temp != NULL)
-		{
-			if (temp->data == n->data)
-			{	
-				temp1 = temp->prev;
-				temp1->next = temp->next;
-				if(temp->next)
-				temp->next->prev = temp1;
-				count--;
-				temp = NULL;
-				return true;
+		else
+			while (temp != NULL)
+			{
+				if (temp->data == n->data)
+				{
+					temp1 = temp->prev;
+					temp1->next = temp->next;
+					if (temp->next)
+						temp->next->prev = temp1;
+					count--;
+					temp = NULL;
+					return true;
+				}
+				temp = temp->next;
 			}
-			temp = temp->next;
-		}
 		return false;
 	}
 
@@ -121,15 +128,16 @@ public:
 
 
 
-//================ RING ====================
+
+
 
 template<typename Type>
-class Machine  {
+class Machine : public LoL<Type> {
 
 public:
 	Type id;
 	Type hashed_id;
-	Routing_Table Fht;
+	Routing_Table<Type> Fht;
 	AvlTree<Type> Tree;
 
 	Machine* next;
@@ -184,17 +192,31 @@ public:
 
 
 
-
 template<typename Type>
 class Ring_DHT {
 public:
+
+
 	
+
+
+
+
+
+
+
+
+
+	//================ RING ====================
+
+	
+
 
 
 	Machine<Type>* head;
 	int lol = 0;
 
-public:
+
 
 	Ring_DHT() { head = NULL; }
 	
@@ -289,7 +311,11 @@ public:
 
 			for (int i = 1; i <= id; i++) {	//
 				string h = to_string((int(stoi(temp->id) + pow(2, i - 1))) % int(pow(2, id)));
-				temp->Fht.insert(i, Succ(h), h);// , Get_ptr(Succ(h)));
+				Machine<Type> loo = *(Get_ptr(Succ(h)));
+				LoL<Type>* lp = new Machine<Type>;
+				lp = loo;
+				cout << "\nuirhfyref\n";
+				temp->Fht.insert(i, Succ(h), h, lp );
 			}
 			temp = temp->next;
 		}
