@@ -3,6 +3,11 @@
 //using namespace std;
 
 
+class Jh {
+
+public:
+	virtual void lol()=0;
+};
 
 
 class Routing_Table { // doubly link list
@@ -12,6 +17,7 @@ class Routing_Table { // doubly link list
 	struct Node {
 		string mech;
 		string data;
+		Jh* ptr;
 		int val;
 		Node* next;
 		Node* prev;
@@ -114,59 +120,66 @@ public:
 
 //================ RING ====================
 
+template<typename Type>
+struct Machine:public Jh {
+
+public:
+	Type id;
+	Type hashed_id;
+	Routing_Table Fht;
+	AvlTree<Type> Tree;
+	Machine* next;
+	int count = 0;
+	int tot = 0;
+	Machine() { next = NULL; }
+
+
+	string File(string key)
+	{
+		string name = "";
+
+		if (count == 100 || count == 0) {
+			tot++;
+			name = "Treefile_Machine_" + id + "_" + to_string(tot) + ".txt";
+			ofstream file(name);
+			file << key << endl;
+			file.close();
+			count = 1;
+		}
+		else {
+
+			fstream file;
+			name = "Treefile_Machine_" + id + "_" + to_string(tot) + ".txt";
+			file.open(name, std::ios::app);
+			file << key << endl;
+			file.close();
+			count++;
+		}
+		return name;
+	}
+
+	bool Add(AvlNode<Type>* var) {
+		string s = File((var->data + "    " + var->key));
+		var->path = s;
+		var->line_no = to_string(count);
+		Tree.Insert(var, &(Tree.root));
+		return true;
+	}
+
+
+
+};
+
+
+
+
+
+
 
 template<typename Type>
 class Ring_DHT {
-
-	template<typename Type>
-	struct Machine {
-		
-	public:
-		Type id;
-		Type hashed_id;
-		Routing_Table Fht;
-		AvlTree<Type> Tree;
-		Machine* next;
-		int count = 0;
-		int tot = 0;
-		Machine() { next = NULL; }
-
-		
-		string File(string key)
-		{
-			string name = "";
-
-			if (count == 100 || count == 0) {
-				tot++;
-				name = "Treefile_Machine_" + id + "_" + to_string(tot) + ".txt";
-				ofstream file(name);
-				file << key << endl;
-				file.close();
-				count = 1;
-			}
-			else {
-
-				fstream file;
-				name = "Treefile_Machine_" + id + "_" + to_string(tot) + ".txt";
-				file.open(name, std::ios::app);
-				file << key << endl;
-				file.close();
-				count++;
-			}
-			return name;
-		}
-		
-		bool Add(AvlNode<Type>* var) {		
-			string s = File((var->data + "    " + var->key));
-			var->path = s;
-			var->line_no = to_string(count);
-			Tree.Insert(var, &(Tree.root));
-			return true;
-		}
-
-		
-		
-	};
+public:
+	
 
 
 	Machine<Type>* head;
