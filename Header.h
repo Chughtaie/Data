@@ -2,21 +2,22 @@
 //#include <iostream>
 //using namespace std;
 
-struct Node {
 
-	string data;
-	Node* next;
-	Node* prev;
-
-	Node() { next = prev = NULL; data = ""; }
-};
 
 
 class Routing_Table { // doubly link list
 
 
 
+	struct Node {
+		string mech;
+		string data;
+		int val;
+		Node* next;
+		Node* prev;
 
+		Node() { next = prev = NULL; data = mech = ""; }
+	};
 
 public:
 
@@ -25,18 +26,14 @@ public:
 
 	Routing_Table() { head =  NULL; count = 0; }
 
-	void insert(Node* n)
+	void insert(int id,string space,string h)
 	{
 		if (!head)
 		{
-			//head = new Node;
-			head = n;
-			//head = new Node;
-			//head->next = head;
-			//head->prev = head;
-			// head->prev = head->
-			//cout <<"insertion 1 " <<head->node->data << endl;
-			//head->next = head; count++;
+			head = new Node;
+			head->val = id;
+			head->data = space;
+			head->mech = h;
 		}
 		else
 		{
@@ -48,8 +45,11 @@ public:
 			}
 
 			//temp->next = new Node;
-			temp->next = n;
+			temp->next = new Node;
 			temp->next->prev = temp;
+			temp->next->data = space;
+			temp->next->val = id;// (temp->val + 1);
+			temp->next->mech = h;
 			//cout << "insertion 2 " << temp->next->node->data << endl;
 			//temp->next->next = head; count++;
 
@@ -62,7 +62,7 @@ public:
 		Node* temp = head;
 		while (temp != NULL)
 		{
-			cout << temp->data << endl;
+			cout << "val data mech\t" <<temp->val << "\t" << temp->data << "\t" << temp->mech <<  endl;
 			temp = temp->next;
 		}
 		//temp->tree.display(temp->tree.root);
@@ -170,7 +170,7 @@ class Ring_DHT {
 
 
 	Machine<Type>* head;
-	
+	int lol = 0;
 public:
 
 	Ring_DHT() { head = NULL; }
@@ -193,10 +193,8 @@ public:
 				temp->Add(var);
 			else head->Add(var);
 			
-			return 1;
-		
+			return 1;		
 		}
-
 	}
 	
 	
@@ -224,9 +222,47 @@ public:
 			temp->next->hashed_id = hid;
 			//cout << "insertion 2 " << temp->next->node->data << endl;
 			temp->next->next = head; //count++;
+		}
+		lol++;
+	}
 
+
+
+	string Succ(string log) {
+	
+		if (head->id == log)
+			return head->id;
+		else {
+
+			Machine<Type>* temp = head;
+
+			while (stoi(temp->id) < stoi(log) && temp->next != head)
+				temp = temp->next;
+			if (stoi(temp->id) >= stoi(log))
+				return temp->id;
+			else 
+				return head->id;
 		}
 	}
+
+
+
+	void Set(int* arr, int id) {
+
+		Machine<Type>* temp = head;
+
+		for (int p = 0; p < lol; p++) {		//for every machine
+
+			for (int i = 1; i <= id; i++) {	//
+				string h = to_string((int(stoi(temp->id) + pow(2, i - 1))) % int(pow(2, id)));
+				temp->Fht.insert(i, Succ(h),h);
+			}
+			temp = temp->next;
+		}
+	}
+
+
+
 
 	void display()
 	{
@@ -237,6 +273,7 @@ public:
 			cout << "\n\nsimple id " << temp->id << endl;
 			cout<< "hashed id " << temp->hashed_id << endl;
 			temp->Tree.display(temp->Tree.root);
+			temp->Fht.display();
 			//cout << endl << endl;
 			temp = temp->next;
 		} while (temp->next != head);
@@ -244,6 +281,7 @@ public:
 		cout << "\n\nsimple id " << temp->id << endl;
 		cout << "hashed id " << temp->hashed_id << endl;
 		temp->Tree.display(temp->Tree.root);
+		temp->Fht.display();
 		cout << endl << endl;
 		//temp->tree.display(temp->tree.root);
 
