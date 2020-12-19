@@ -172,7 +172,7 @@ int main()
 		cout << arr[i] << endl;
 
 
-	Ring_DHT<string> system_mach;
+	Ring_DHT<string> system_mach(idspace,p);
 
 	string t = "";
 
@@ -184,7 +184,7 @@ int main()
 	}
 	system_mach.Set(arr,idspace);
 
-
+	
 	
 
 
