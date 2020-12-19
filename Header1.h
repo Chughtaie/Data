@@ -235,10 +235,11 @@ public:
 
 		while (temp)
 		{
-			if (temp->key == d)
+			//cout << "str   " << stoi(temp->key) << "\t" << stoi(d) << endl;
+			if (stoi(temp->key) == stoi(d))
 				return temp;
 
-			if (d > temp->key)
+			if (stoi(d) > stoi(temp->key))
 				temp = temp->right;
 			else
 				temp = temp->left;
