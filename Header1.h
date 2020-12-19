@@ -229,22 +229,22 @@ public:
 
 	}
 
-	bool retrieve(int d)
+	AvlNode<T>* retrieve(string d)
 	{
 		AvlNode<T>* temp = root;
 
 		while (temp)
 		{
-			if (temp->data == d)
-				return true;
+			if (temp->key == d)
+				return temp;
 
-			if (d > temp->data)
+			if (d > temp->key)
 				temp = temp->right;
 			else
 				temp = temp->left;
 		}
-
-		return false;
+		cout << "\nDoes Not Exist\n";
+		return NULL;
 	}
 
 	int MAXHeight()
