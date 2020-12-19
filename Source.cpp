@@ -95,6 +95,7 @@ string Hash(string str) {
 	//std::cout << "\nString" << strin << "\n";
 	std::size_t str_hash = std::hash<std::string>{}(strin);
 	strin = to_string(str_hash);
+	strin[9] = '\0';
 	//str = str_hash;
 	std::cout << "hash(" << std::quoted(strin) << ") = " << str_hash << '\n';
 	//long int val = str_hash % p;
@@ -105,7 +106,7 @@ string Hash(string str) {
 
 string Machine(string val, string max) {
 	//cout << "\n\nbfhfbheb \t"
-	val[9] = '\0';
+	//val[9] = '\0';
 	return to_string(stoi(val) % stoi(max));
 } 
 
@@ -197,11 +198,15 @@ int main()
 		AvlNode<string>* var = new AvlNode<string>;
 		var->data = s;
 		var->key = Hash(s);
-		var->mach = Machine(var->key, to_string(n));
+		var->mach = Machine(var->key, to_string(p));
 		//cout << var->mach << "\t" << var->key << "\t" << n << endl;;
 		system_mach.Add(var);
 		//var.
 	}
+	cout << "\nEnter The search!!\n";
+	std::getline(cin, s);
+	system_mach.Search(Hash(s));
+
 	system_mach.display();
 
 
