@@ -108,23 +108,27 @@ string Machine(string val, string max) {
 	//cout << "\n\nbfhfbheb \t"
 	//val[9] = '\0';
 	return to_string(stoi(val) % stoi(max));
-} 
+}
 
 int main()
 {
 	srand(time(0));
 
-
-	int n = 0, idspace=0;
+	int aut = 0; string auts;
+	int n = 0, idspace = 0;
 	string no;
 	cout << "enter number of machines\n";
-	getline(cin,no);
+	getline(cin, no);
 	n = stoi(no);
+
 	cout << "enter identifier space\n";
 	getline(cin, no);
+
 	cout << "\n\n";
 	idspace = stoi(no);
-
+	cout << "If you want to assign machine IDs manually, PRESS 1 and enter, else press any key to continue\n";
+	getline(cin, auts);
+	aut = stoi(auts);
 
 	int p = pow(2, idspace);
 	//cout << "\nPower = " << p << endl;
@@ -133,25 +137,64 @@ int main()
 	bool check = 1;
 	int temp = 0, j = 0;
 
-	for (int i = 0; i < n;)
-	{
-		
-		temp = 0 + rand() % (p-1);
-		check = 1; j = 0;
-
-		while (j < i)
+	if (aut != 1) {
+		for (int i = 0; i < n;)
 		{
-			if (temp == arr[j])
-				check = 0;
-			j++;
+
+			temp = 0 + rand() % (p - 1);
+			check = 1; j = 0;
+
+			while (j < i)
+			{
+				if (temp == arr[j])
+					check = 0;
+				j++;
+			}
+
+			if (check)
+			{
+				arr[i] = temp; i++;
+			}
+
+		}
+	}
+	else {
+		for (int i = 0; i < n;)
+		{
+
+			cout << "\nEnter machine ID to store : ";
+			getline(cin, auts);
+			temp = stoi(auts);
+			if (temp >= p) {
+				cout << "The size is bigger...";
+				temp = temp % (p - 1);
+			}
+			check = 1; j = 0;
+
+			while (j < i)
+			{
+				if (temp == arr[j])
+					check = 0;
+				j++;
+			}
+
+			if (check)
+			{
+				arr[i] = temp; i++;
+			}
+
 		}
 
-		if (check)
-		{
-			arr[i] = temp; i++;
-		}
+
+
+
+
 
 	}
+
+
+
+
 
 	int tempo;
 
@@ -173,7 +216,7 @@ int main()
 		cout << arr[i] << endl;
 
 
-	Ring_DHT<string> system_mach(idspace,p);
+	Ring_DHT<string> system_mach(idspace, p);
 
 	string t = "";
 
@@ -183,18 +226,18 @@ int main()
 
 		system_mach.insert(to_string(arr[i]), t);
 	}
-	system_mach.Set(arr,idspace);
+	system_mach.Set(arr, idspace);
 
-	
-	
+
+
 
 
 
 	string s = "0";
 	while (1) {
 		cout << "\nEnter The shit you want to store!!\n";
-		std::getline(cin, s);	
-		if (s == "-1") break;	
+		std::getline(cin, s);
+		if (s == "-1") break;
 		AvlNode<string>* var = new AvlNode<string>;
 		var->data = s;
 		var->key = Hash(s);
@@ -213,8 +256,8 @@ int main()
 	//=========		Inputs of Strings	 ==============
 
 
-	
+
 	return 0;
-	
-	
+
+
 }
