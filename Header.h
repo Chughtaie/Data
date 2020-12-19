@@ -1,35 +1,27 @@
 #include "Header1.h"
 //#include <iostream>
 //using namespace std;
+
 template<typename Type>
-class LoL {
+struct Node {
+	string mech;	//actual machine
+	string data;	//succ of machine
+	//Machine<Type>* ptr = NULL;
+	void* ptr;		//ptr of succ
+	int val;		//1 = i
 
-public:
-	void lol() { cout << endl; }
+	Node* next;
+	Node* prev;
 
-	
+	Node() { next = prev = NULL; data = mech = ""; }
 };
-
-
 
 
 template<typename Type>
 class Routing_Table { // doubly link list
 
 
-	template<typename Type>
-	struct Node {
-		string mech;
-		string data;
-		//Machine<Type>* ptr = NULL;
-		LoL<Type>* ptr;
-		int val;
-
-		Node* next;
-		Node* prev;
-
-		Node() { next = prev = NULL; data = mech = ""; }
-	};
+	
 
 public:
 
@@ -38,7 +30,7 @@ public:
 
 	Routing_Table() { head = NULL; count = 0; }
 
-	void insert(int id, string space, string h, LoL<Type>* p = NULL)
+	void insert(int id, string space, string h, void* p = NULL)
 	{
 
 		cout << "\nPROGRESS\n";
@@ -78,13 +70,12 @@ public:
 		Node<Type>* temp = head;
 		while (temp != NULL)
 		{
-			cout << "val data mech\t" << temp->val << "\t" << temp->data << "\t" << temp->mech << endl;
+			cout << "val data mech\t" << temp->val << "\t" << temp->data << "\t" << temp->mech << "\t" << temp->ptr << endl;
 			temp = temp->next;
 		}
 		//temp->tree.display(temp->tree.root);
 
 	}
-
 
 	bool Delete(Node* n) {
 
@@ -117,11 +108,28 @@ public:
 		return false;
 	}
 
-
 	int getcount() {
 
 		return count;
 	}
+
+	bool Check(string key) {
+	
+		Node<Type>* temp = head;
+
+		while (temp)
+		{
+
+
+
+			temp = temp->next;
+		}
+	
+	
+	
+	
+	}
+
 
 };
 
@@ -132,7 +140,7 @@ public:
 
 
 template<typename Type>
-class Machine : public LoL<Type> {
+class Machine  {
 
 public:
 	Type id;
@@ -196,16 +204,7 @@ template<typename Type>
 class Ring_DHT {
 public:
 
-
 	
-
-
-
-
-
-
-
-
 
 	//================ RING ====================
 
@@ -215,10 +214,12 @@ public:
 
 	Machine<Type>* head;
 	int lol = 0;
+	int id_space;
+	int max;
 
 
 
-	Ring_DHT() { head = NULL; }
+	Ring_DHT(int Lo = 0, int ma = 0) { head = NULL; id_space = Lo; max = ma; }
 	
 
 	bool Add(AvlNode<Type>* var) {
@@ -290,18 +291,38 @@ public:
 		}
 	}
 
+	void Ret(Machine<Type>* temp) {}
 
+	void* Search(Type key,int mac = 0) {
 
-	Machine<Type>* Get_ptr(string str) {
-	
-		Machine<string>* temp = head;
-		while (temp) {
-		
-			if (temp->id == str) return temp;
+		int log = stoi(key) % max;
+		Machine<Type>* temp = head;
+
+		while (1) {
+
+			Node<Type>* tempo = temp->Fht.head;
+
+			if (to_string(log) == temp->id) { Ret(temp); return; }
+			else if (temp->id < to_string (log)   && to_string(log) <= tempo->data) {	//p<e and e<=Ftp[1]
+				temp = tempo->ptr; break;
+			}
+			else 
+			while (tempo) {
+				if (tempo->next != NULL)
+					if (tempo->data < to_string(log) && tempo->next->data >= to_string(log))	//Ftp[j] < e < Ftp[j+1]
+					{
+						temp = tempo->ptr;
+						break;
+					}
+
+				tempo = tempo->next;
+			}
+				
 		}
-	//return ;	
 	}
 
+
+	
 
 	void Set(int* arr, int id) {
 
@@ -311,16 +332,16 @@ public:
 
 			for (int i = 1; i <= id; i++) {	//
 				string h = to_string((int(stoi(temp->id) + pow(2, i - 1))) % int(pow(2, id)));
-				Machine<Type> loo = *(Get_ptr(Succ(h)));
-				LoL<Type>* lp = new Machine<Type>;
-				lp = loo;
-				cout << "\nuirhfyref\n";
-				temp->Fht.insert(i, Succ(h), h, lp );
+				
+				//Machine<Type>* loo = (Get_ptr(Succ(h)));
+				//LoL<Type>* lp = new Machine<Type>;
+				//lp = loo;
+				//cout << "\nuirhfyref\n";
+				temp->Fht.insert(i, Succ(h), h , Get_ptr(Succ(h)));
 			}
 			temp = temp->next;
 		}
 	}
-
 
 
 
@@ -330,21 +351,38 @@ public:
 
 		do{
 			//temp->tree.display(temp->tree.root);
+			cout << "\n--------------------------\n";
 			cout << "\n\nsimple id " << temp->id << endl;
 			cout<< "hashed id " << temp->hashed_id << endl;
+			cout << temp << endl;
 			temp->Tree.display(temp->Tree.root);
 			temp->Fht.display();
+
+
 			//cout << endl << endl;
 			temp = temp->next;
 		} while (temp->next != head);
-
+		cout << "\n--------------------------\n";
 		cout << "\n\nsimple id " << temp->id << endl;
 		cout << "hashed id " << temp->hashed_id << endl;
+		cout << temp << endl;
 		temp->Tree.display(temp->Tree.root);
 		temp->Fht.display();
 		cout << endl << endl;
 		//temp->tree.display(temp->tree.root);
 
 	}
+
+	Machine<Type>* Get_ptr(string str) {
+
+		Machine<string>* temp = head;
+		while (temp) {
+			if (temp->id == str) return temp;
+			temp = temp->next;
+		}
+
+		//return ;	
+	}
+
 
 };
