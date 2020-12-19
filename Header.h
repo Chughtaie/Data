@@ -33,7 +33,7 @@ public:
 	void insert(int id, string space, string h, void* p = NULL)
 	{
 
-		cout << "\nPROGRESS\n";
+		//cout << "\nPROGRESS\n";
 		if (!head)
 		{
 			head = new Node<Type>;
@@ -77,7 +77,7 @@ public:
 
 	}
 
-	bool Delete(Node* n) {
+	bool Delete(Node<Type>* n) {
 
 		Node<Type>* temp = head;
 		Node<Type>* temp1;
@@ -291,34 +291,97 @@ public:
 		}
 	}
 
-	void Ret(Machine<Type>* temp) {}
+	void Ret(Machine<Type>* temp,string key) {
+		
+		if (!temp) return;
+		//cout << "\nMachine NO. " << temp->id << endl;
+		AvlNode<Type>* lo = temp->Tree.retrieve(key);
+		if (!lo) { cout << "\nNULL\n"; return; }
+		cout << "\n\n&&&&&&&&&&&&&&&===========Data============&&&&&&&&&&&&&&";
+		cout << "\ndata\t" << lo->data << '\n';	// left root right
+		cout << "path\t" << lo->path << '\n';	// left root right
+		cout << "Line no\t" << lo->line_no << '\n';	// left root right
+		cout << "mach\t" << lo->mach << '\n';	// left root right
+		cout << "key\t" << lo->key << '\n';	// left root right
 
-	void* Search(Type key,int mac = 0) {
+		cout << "By File\n";
 
+		ifstream input;
+		string data;
+		input.open(lo->path);
+		for (int i = 1; input.eof(); i++)
+		{
+			input >> data;
+			if (to_string(i) == lo->line_no) { cout << data; break; }
+		}
+		input.close();
+	
+	}
+
+	void Search(Type key,int mac = 0) {
+		//cout << "\nmax = " << max ;
 		int log = stoi(key) % max;
+		//void* temp = head;
 		Machine<Type>* temp = head;
+		Node<Type>* tempo = temp->Fht.head;
+		//cout << endl << to_string(log) << endl;
+
 
 		while (1) {
+			//cout << "\nBund  mara";
+			//cout << "loop  " << to_string(log) << endl;
+			 tempo = temp->Fht.head;
 
-			Node<Type>* tempo = temp->Fht.head;
-
-			if (to_string(log) == temp->id) { Ret(temp); return; }
+			 if (to_string(log) == temp->id) { cout << "\n=====1=======\n"; Ret(temp, key);  return; }
 			else if (temp->id < to_string (log)   && to_string(log) <= tempo->data) {	//p<e and e<=Ftp[1]
-				temp = tempo->ptr; break;
+				temp = static_cast<Machine<Type>*>(tempo->ptr); cout << "\n=====2=======\n"; Ret(temp,key); return;
+			}
+			else
+			while (tempo) {
+				if (tempo->next != NULL)
+				if (tempo->data < to_string(log) && to_string(log) <= tempo->next->data )	//Ftp[j] < e < Ftp[j+1]
+				{
+					cout << "\n=====3=======\n";
+					temp = static_cast<Machine<Type>*>(tempo->ptr);
+					break;
+				}
+				if (tempo->next == NULL)
+				{
+					cout << "\n=====4=======\n";
+					temp = static_cast<Machine<Type>*>(tempo->ptr);
+					break;
+				}
+				tempo = tempo->next;
+			}	
+
+
+		}
+		
+		//while(1){
+			//cout << "loop  " << to_string(log) << endl;
+			/* tempo = temp->Fht.head;
+			 
+			if (to_string(log) == temp->id) { Ret(temp,key); return; }
+			else if (temp->id < to_string (log)   && to_string(log) <= tempo->data) {	//p<e and e<=Ftp[1]
+				temp = static_cast<Machine<Type>*>(tempo->ptr); Ret(temp,key); return;
 			}
 			else 
 			while (tempo) {
 				if (tempo->next != NULL)
-					if (tempo->data < to_string(log) && tempo->next->data >= to_string(log))	//Ftp[j] < e < Ftp[j+1]
-					{
-						temp = tempo->ptr;
-						break;
-					}
-
+				if (tempo->data < to_string(log) && to_string(log) <= tempo->next->data )	//Ftp[j] < e < Ftp[j+1]
+				{
+					temp = static_cast<Machine<Type>*>(tempo->ptr);
+					break;
+				}
+				if (tempo->next == NULL)
+				{
+					temp = static_cast<Machine<Type>*>(tempo->ptr);
+					break;
+				}
 				tempo = tempo->next;
-			}
-				
-		}
+			}	*/
+			//temp = temp->next;
+		//}
 	}
 
 
