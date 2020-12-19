@@ -110,6 +110,8 @@ string Machine(string val, string max) {
 	return to_string(stoi(val) % stoi(max));
 }
 
+
+
 int main()
 {
 	srand(time(0));
@@ -246,11 +248,19 @@ int main()
 		system_mach.Add(var);
 		//var.
 	}
+	//system_mach.display();
+
+
 	cout << "\nEnter The search!!\n";
 	std::getline(cin, s);
 	system_mach.Search(Hash(s));
 
-	system_mach.display();
+	cout << "\nEnter 1 to ENter a machINe!!\n";
+	std::getline(cin, s);
+	//if(s=="1")
+	//system_mach.Add_Machine(Hash(s));
+
+	//system_mach.display();
 
 
 	//=========		Inputs of Strings	 ==============
