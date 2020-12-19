@@ -173,7 +173,7 @@ public:
 		}
 		else {
 
-			fstream file;
+			ofstream file;
 			name = "Treefile_Machine_" + id + "_(" + to_string(tot) + ").txt";
 			file.open(name, std::ios::app);
 			file << key << endl;
@@ -309,10 +309,10 @@ public:
 		ifstream input;
 		string data;
 		input.open(lo->path);
-		for (int i = 1; input.eof(); i++)
+		for (int i = 1; (!input.eof()); i++)
 		{
-			input >> data;
-			if (to_string(i) == lo->line_no) { cout << data; break; }
+			getline(input,data);
+			if (to_string(i) == lo->line_no) { cout << "\n data = " << data; break; }
 		}
 		input.close();
 	
@@ -321,6 +321,7 @@ public:
 	void Search(Type key,int mac = 0) {
 		//cout << "\nmax = " << max ;
 		int log = stoi(key) % max;
+		log = stoi(Succ(to_string(log)));
 		//void* temp = head;
 		Machine<Type>* temp = head;
 		Node<Type>* tempo = temp->Fht.head;
@@ -330,12 +331,15 @@ public:
 		while (1) {
 			//cout << "\nBund  mara";
 			//cout << "loop  " << to_string(log) << endl;
-			 tempo = temp->Fht.head;
-
+			 //tempo = temp->Fht.head;
+			 cout << "\n\nMachine no =  " << temp->id;
+			 int i = 0;
 			 if (to_string(log) == temp->id) { cout << "\n=====1=======\n"; Ret(temp, key);  return; }
-			else if (temp->id < to_string (log)   && to_string(log) <= tempo->data) {	//p<e and e<=Ftp[1]
+
+			else if (temp->id < to_string (log) && to_string(log) <= tempo->data) {	//p<e and e<=Ftp[1]
 				temp = static_cast<Machine<Type>*>(tempo->ptr); cout << "\n=====2=======\n"; Ret(temp,key); return;
 			}
+			
 			else
 			while (tempo) {
 				if (tempo->next != NULL)
@@ -351,6 +355,9 @@ public:
 					temp = static_cast<Machine<Type>*>(tempo->ptr);
 					break;
 				}
+				cout << "\ntempo\t" << i << "\n" ;
+				//tempo.
+				i++;
 				tempo = tempo->next;
 			}	
 
