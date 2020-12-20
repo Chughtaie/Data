@@ -31,13 +31,14 @@ class AvlTree {
 public:
 
 	AvlNode<T>* root;
+	AvlNode<T>* dele;
 	int height;
 	int lh = 0, rh = 0;
 	int h = 0, a = 0;
 
 	AvlTree() {
 
-		root = NULL;
+		root = dele = NULL;
 		height = 0;
 
 	}
@@ -147,7 +148,7 @@ public:
 
 		else if ((*temp)->key == number->key)
 		{
-			cout << " \n Given number is already present in tree.\n";
+			cout << " \n Given number is already present in tree.\t" << number->data << "\t" << number->mach << endl;
 			return;
 		}
 
@@ -314,44 +315,86 @@ public:
 				else
 					Right(temp);
 
-			}
-	
+			}	
+	}
+
+	T key;
+	void Search(AvlNode<T>* temp,int mac)  //traverse
+	{
+		if (temp == NULL || root == NULL)
+		{
+			return;
+		}
+		if (to_string(mac) == temp->mach) key = temp->key;
+		if (temp->left != NULL)
+		{
+			display(temp->left);    //LVR display
+
+		}
+		if (to_string(mac) == temp->mach) key = temp->key;
+		// cout << "\nSdfd\n";
+
+		if (temp->right != NULL)
+		{
+			display(temp->right);
+		}
+		if (to_string(mac) == temp->mach) key = temp->key;
+
+	}
+
+
+	AvlNode<T>* Delete(AvlNode<T>** temp, int n) {
+		Search(*temp,n);
+		del(temp,stoi(key));
+		return dele;
 	}
 
 	AvlNode<T>* del(AvlNode<T>** temp, int n) {
 		if (*temp == NULL )
 			return *temp;
-		if (n > (*temp)->data)
+		if (n > stoi((*temp)->key))
 		{
 			(*temp)->right = del(&((*temp)->right), n);	//
-			Bal(&((*temp)->right),n);
+			//Bal(&((*temp)->right),to_string(n));
 		}
-		else if ((*temp)->data > n)
+		else if (stoi((*temp)->key) > n)
 		{
 			(*temp)->left = del(&((*temp)->left), n);	//
-			Bal(&((*temp)->left), n);
+			//Bal(&((*temp)->left), to_string(n));
 		}
 		else {
 			if ((*temp)->left == NULL && (*temp)->right == NULL) {
-				delete *temp;
+				//delete *temp;				
+				//AvlNode<T>* loo = (*temp);
+				dele = *temp;
 				*temp = NULL;
+				//return loo;
+
 			}
 			else if ((*temp)->left == NULL) {
-				AvlNode<T>* temp1 = *temp;
+				//AvlNode<T>* temp1 = *temp;
+				dele = *temp; 
 				*temp = (*temp)->right;
-				delete temp1;
+				//return temp1;
+				//delete temp1;
 			}
 			else if ((*temp)->right == NULL) {
-				AvlNode<T>* temp1 = *temp;
-				*temp = (*temp)->left;
-				delete temp1;
+				//AvlNode<T>* temp1 = *temp;
+				dele = *temp;
+				*temp = (*temp)->left;				
+				//return temp1;
+				//delete temp1;
 
 			}
 			else { //case  3
 				AvlNode<T>* temp1 = minimum((*temp)->right);
 				(*temp)->data = temp1->data;
+				(*temp)->mach = temp1->mach;
+				(*temp)->key = temp1->key;
+				(*temp)->path = temp1->path;
+				(*temp)->line_no = temp1->line_no;
 				//temp->right = 
-				(*temp)->right = del(&((*temp)->right), temp1->data);
+				(*temp)->right = del(&((*temp)->right), stoi(temp1->key));
 
 			}
 		}
