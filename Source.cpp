@@ -118,11 +118,11 @@ int main()
 
 	int aut = 0; string auts;
 	int n = 0, idspace = 0;
-	string no;
+	string no = "2";
 	cout << "enter number of machines\n";
 	getline(cin, no);
 	n = stoi(no);
-
+	no = "2";
 	cout << "enter identifier space\n";
 	getline(cin, no);
 
@@ -187,11 +187,6 @@ int main()
 
 		}
 
-
-
-
-
-
 	}
 
 
@@ -248,19 +243,22 @@ int main()
 		system_mach.Add(var);
 		//var.
 	}
-	//system_mach.display();
+	system_mach.display();
 
 
 	cout << "\nEnter The search!!\n";
 	std::getline(cin, s);
+	if (s != "-1")
 	system_mach.Search(Hash(s));
 
 	cout << "\nEnter 1 to ENter a machINe!!\n";
 	std::getline(cin, s);
-	//if(s=="1")
-	//system_mach.Add_Machine(Hash(s));
-
-	//system_mach.display();
+	if (s != "-1")
+	{
+		std::getline(cin, s);
+		system_mach.Add_Machine(s, Hash(s));
+	}
+	system_mach.display();
 
 
 	//=========		Inputs of Strings	 ==============
