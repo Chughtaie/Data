@@ -140,7 +140,7 @@ public:
 
 
 template<typename Type>
-class Machine  {
+class Machine {
 
 public:
 	Type id;
@@ -191,8 +191,6 @@ public:
 		return true;
 	}
 
-
-
 };
 
 
@@ -213,6 +211,7 @@ public:
 
 
 	Machine<Type>* head;
+
 	int lol = 0;
 	int id_space;
 	int max;
@@ -233,9 +232,9 @@ public:
 		
 			Machine<Type>* temp = head;
 
-			while (temp->id < var->mach && temp->next != head) 			
+			while (stoi(temp->id) < stoi(var->mach) && temp->next != head) 			
 				temp = temp->next;
-			if (temp->id >= var->mach)
+			if (stoi(temp->id) >= stoi(var->mach))
 				temp->Add(var);
 			else head->Add(var);
 			
@@ -245,29 +244,72 @@ public:
 	
 	
 
-	void insert(Type idd, Type hid)
+	void Add_Machine(Type idd, Type hid) {
+	
+		Machine<Type>* temp = insert(idd,hid); //previous node of newly added f**king node
+		if (!temp)  return; 
+
+		for (int i = 1; ((stoi(temp->id) + i) % max) != (stoi(temp->next->id)+1);i++)
+		{
+			AvlNode<Type>* node = new AvlNode<Type>;
+			
+			while (node) {
+				node = NULL;
+				node = temp->next->next->Tree.Delete(&(temp->next->next->Tree.root),(stoi(temp->id)+i)%max);
+				temp->next->next->Tree.dele = NULL;
+				if (node != NULL) temp->next->Tree.Insert(node,&(temp->next->Tree.root));
+				
+			}
+		}	
+	}
+
+
+	Machine<Type>* insert(Type idd, Type hid)
 	{
 		if (!head)
 		{
 			head = new Machine<Type>;
 			head->id = idd;
 			head->hashed_id = hid;
-			//cout <<"insertion 1 " <<head->node->data << endl;
 			head->next = head; //count++;
+			cout << "\n111\n";
+			return NULL;
+		}
+		else if (stoi(head->id) > stoi(idd))	//enter 0 after 1
+		{
+			Machine<Type>* temp = head;
+			while (temp->next != head)
+				temp = temp->next;
+			
+			temp->next = new Machine<Type>;
+			//temp = temp->next;
+			temp->next->id = idd;
+			temp->next->hashed_id = hid;
+			temp->next->next = head;
+		
+			if (head->next == head)
+				head->next = temp->next;
+			
+			head = temp->next;
+			cout << "\n222\n";
+			return temp;
 		}
 		else
 		{
 			Machine<Type>* temp = head;
 			while (temp->next != head)
 			{
-				temp = temp->next;
+				if (stoi(temp->next->id) > stoi(idd))
+					break;
+				else temp = temp->next;				
 			}
-
+			Machine<Type>* tempo = temp->next;
 			temp->next = new Machine<Type>;
 			temp->next->id = idd;
 			temp->next->hashed_id = hid;
-			//cout << "insertion 2 " << temp->next->node->data << endl;
-			temp->next->next = head; //count++;
+			temp->next->next = tempo; //count++;
+			cout << "\n333\n";
+			return temp;
 		}
 		lol++;
 	}
