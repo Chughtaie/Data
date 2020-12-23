@@ -82,7 +82,7 @@ namespace std
 }
 
 
-string Hash(string str) {
+int Hash(string str) {
 
 	std::string strin = "";
 
@@ -100,7 +100,7 @@ string Hash(string str) {
 	std::cout << "hash(" << std::quoted(strin) << ") = " << str_hash << '\n';
 	//long int val = str_hash % p;
 	//cout << endl << strin << endl;
-	return strin;
+	return stoi(strin);
 }
 
 
@@ -119,22 +119,25 @@ int main()
 	int aut = 0; string auts;
 	int n = 0, idspace = 0;
 	string no = "2";
+
+
 	cout << "enter number of machines\n";
 	getline(cin, no);
 	n = stoi(no);
 	no = "2";
+
 	cout << "enter identifier space\n";
 	getline(cin, no);
-
 	cout << "\n\n";
 	idspace = stoi(no);
+
 	cout << "If you want to assign machine IDs manually, PRESS 1 and enter, else press any key to continue\n";
 	getline(cin, auts);
 	aut = stoi(auts);
 
 	int p = pow(2, idspace);
 	//cout << "\nPower = " << p << endl;
-	int* arr = new int[n];
+	int* arr = new int[p];
 
 	bool check = 1;
 	int temp = 0, j = 0;
@@ -197,7 +200,7 @@ int main()
 
 	for (int i = 0; i < n; i++)
 	{
-		 
+
 		for (int j = i + 1; j < n; j++)
 		{
 			if (arr[i] > arr[j])
@@ -213,15 +216,15 @@ int main()
 		cout << arr[i] << endl;
 
 
-	Ring_DHT<string> system_mach(idspace, p);
+	Ring_DHT<string, int> system_mach(idspace, p);
 
-	string t = "";
+	int t = 0;
 
 	for (int i = 0; i < n; i++)
 	{
 		t = Hash(to_string(arr[i]));
 
-		system_mach.insert(to_string(arr[i]), t);
+		system_mach.insert(arr[i], t);
 	}
 	system_mach.Set(arr, idspace);
 
@@ -230,15 +233,16 @@ int main()
 
 
 
-	string s = "0";
+	//string s = " ";
+	string s = " ";
 	while (1) {
 		cout << "\nEnter The shit you want to store!!\n";
 		std::getline(cin, s);
 		if (s == "-1") break;
-		AvlNode<string>* var = new AvlNode<string>;
+		AvlNode<string, int>* var = new AvlNode<string, int>;
 		var->data = s;
 		var->key = Hash(s);
-		var->mach = Machine(var->key, to_string(p));
+		var->mach = (var->key%p);
 		//cout << var->mach << "\t" << var->key << "\t" << n << endl;;
 		system_mach.Add(var);
 		//var.
@@ -249,14 +253,14 @@ int main()
 	cout << "\nEnter The search!!\n";
 	std::getline(cin, s);
 	if (s != "-1")
-	system_mach.Search(Hash(s));
+		system_mach.Search(Hash(s));
 
 	cout << "\nEnter 1 to ENter a machINe!!\n";
 	std::getline(cin, s);
 	if (s != "-1")
 	{
 		std::getline(cin, s);
-		system_mach.Add_Machine(s, Hash(s));
+		system_mach.Add_Machine(stoi(s), Hash(s));
 	}
 	system_mach.display();
 
