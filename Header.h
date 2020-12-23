@@ -2,41 +2,38 @@
 //#include <iostream>
 //using namespace std;
 
-template<typename Type>
+
+template<typename Type,typename Type1>
 struct Node {
-	string mech;	//actual machine
-	string data;	//succ of machine
-	//Machine<Type>* ptr = NULL;
-	void* ptr;		//ptr of succ
-	int val;		//1 = i
+	Type1 mech;	//actual machine
+	Type1 data;	//succ of machine
+	Type1 val;	//1 = i
+	void* ptr;	//ptr of succ
 
 	Node* next;
 	Node* prev;
 
-	Node() { next = prev = NULL; data = mech = ""; }
+	Node() { next = prev = NULL; data = mech = val = 0; }
 };
 
 
-template<typename Type>
+template<typename Type, typename Type1>
 class Routing_Table { // doubly link list
-
-
-	
 
 public:
 
-	Node<Type>* head;
-	int count;
+	Node<Type,Type1>* head;
+	Type1 count;
 
 	Routing_Table() { head = NULL; count = 0; }
 
-	void insert(int id, string space, string h, void* p = NULL)
+	void insert(Type1 id, Type1 space, Type1 h, void* p = NULL)
 	{
 
 		//cout << "\nPROGRESS\n";
 		if (!head)
 		{
-			head = new Node<Type>;
+			head = new Node<Type,Type1>;
 			head->val = id;
 			head->data = space;
 			head->mech = h;
@@ -44,7 +41,7 @@ public:
 		}
 		else
 		{
-			Node<Type>* temp = head;
+			Node<Type, Type1>* temp = head;
 
 			while (temp->next != NULL)
 			{
@@ -52,14 +49,14 @@ public:
 			}
 
 			//temp->next = new Node;
-			temp->next = new Node<Type>;
+			temp->next = new Node<Type, Type1>;
 			temp->next->prev = temp;
 			temp->next->data = space;
 			temp->next->val = id;// (temp->val + 1);
 			temp->next->mech = h;
 			temp->next->ptr = p;
 			//cout << "insertion 2 " << temp->next->node->data << endl;
-			//temp->next->next = head; count++;
+			//temp->next->next = head; line++;
 
 		}
 		count++;
@@ -67,20 +64,19 @@ public:
 
 	void display()
 	{
-		Node<Type>* temp = head;
+		Node<Type,Type1>* temp = head;
 		while (temp != NULL)
 		{
 			cout << "val data mech\t" << temp->val << "\t" << temp->data << "\t" << temp->mech << "\t" << temp->ptr << endl;
 			temp = temp->next;
 		}
 		//temp->tree.display(temp->tree.root);
-
 	}
 
-	bool Delete(Node<Type>* n) {
+	bool Delete(Node<Type, Type1>* n) {
 
-		Node<Type>* temp = head;
-		Node<Type>* temp1;
+		Node<Type, Type1>* temp = head;
+		Node<Type, Type1>* temp1;
 
 		if (head->data == n->data)
 		{
@@ -109,25 +105,18 @@ public:
 	}
 
 	int getcount() {
-
 		return count;
 	}
 
-	bool Check(string key) {
+	bool Check(Type key) {
 	
-		Node<Type>* temp = head;
+		Node<Type, Type1>* temp = head;
 
 		while (temp)
 		{
 
-
-
 			temp = temp->next;
 		}
-	
-	
-	
-	
 	}
 
 
@@ -139,54 +128,50 @@ public:
 
 
 
-template<typename Type>
-class Machine {
+template<typename Type, typename Type1>
+class Machinee {
 
 public:
-	Type id;
-	Type hashed_id;
-	Routing_Table<Type> Fht;
-	AvlTree<Type> Tree;
+	Type1 id;
+	Type1 hashed_id;
+	Routing_Table<Type, Type1> Fht;
+	AvlTree<Type, Type1> Tree;
 
-	Machine* next;
+	Machinee* next;
 
-	int count = 0;
-	int tot = 0;
+	Type1 line ;
+	Type1 file_no ;
 
-	Machine() { next = NULL; }
+	Machinee() { next = NULL; file_no = 0; line = 0; }
 
-	void lol() {
-		cout << endl;
-	}
-
-	string File(string key)
+	Type File(Type key)
 	{
-		string name = "";
+		Type name = "";
 
-		if (count == 100 || count == 0) {
-			tot++;
-			name = "Treefile_Machine_" + id + "_(" + to_string(tot) + ").txt";
+		if (line == 100 || line == 0) {
+			file_no++;
+			line = 1;
+			name = "Treefile_Machine_" + to_string(id) + "_(" + to_string(file_no) + ").txt";
 			ofstream file(name);
 			file << key << endl;
 			file.close();
-			count = 1;
 		}
 		else {
 
 			ofstream file;
-			name = "Treefile_Machine_" + id + "_(" + to_string(tot) + ").txt";
+			name = "Treefile_Machine_" + to_string(id) + "_(" + to_string(file_no) + ").txt";
 			file.open(name, std::ios::app);
 			file << key << endl;
 			file.close();
-			count++;
+			line++;
 		}
 		return name;
 	}
 
-	bool Add(AvlNode<Type>* var) {
-		string s = File((var->data + "    " + var->key));
+	bool Add(AvlNode<Type, Type1>* var) {
+		Type s = File(var->data + "\t\t" + to_string(var->key));
 		var->path = s;
-		var->line_no = to_string(count);
+		var->line_no = line;
 		Tree.Insert(var, &(Tree.root));
 		return true;
 	}
@@ -198,30 +183,26 @@ public:
 
 
 
-template<typename Type>
+template<typename Type, typename Type1>
 class Ring_DHT {
-public:
 
-	
+
+public:
 
 	//================ RING ====================
 
+	Machinee<Type, Type1>* head;
+
+	Type1 machines = 0;
+	Type1 id_space;
+	Type1 max;
+
+
+
+	Ring_DHT(Type1 Lo = 0, Type1 ma = 0) { head = NULL; id_space = Lo; max = ma; }
 	
 
-
-
-	Machine<Type>* head;
-
-	int lol = 0;
-	int id_space;
-	int max;
-
-
-
-	Ring_DHT(int Lo = 0, int ma = 0) { head = NULL; id_space = Lo; max = ma; }
-	
-
-	bool Add(AvlNode<Type>* var) {
+	bool Add(AvlNode<Type, Type1>* var) {	//Add data in a machine
 	
 		if (head->id == var->mach)
 		{
@@ -230,11 +211,11 @@ public:
 		}
 		else {
 		
-			Machine<Type>* temp = head;
+			Machinee<Type, Type1>* temp = head;
 
-			while (stoi(temp->id) < stoi(var->mach) && temp->next != head) 			
+			while (temp->id < var->mach && temp->next != head) 			
 				temp = temp->next;
-			if (stoi(temp->id) >= stoi(var->mach))
+			if (temp->id >= var->mach)
 				temp->Add(var);
 			else head->Add(var);
 			
@@ -244,157 +225,160 @@ public:
 	
 	
 
-	void Add_Machine(Type idd, Type hid) {
+	void Add_Machine(Type1 idd, Type1 hid) {		//Add MAchine and Settle it.
 	
-		Machine<Type>* temp = insert(idd,hid); //previous node of newly added f**king node
+		Machinee<Type, Type1>* temp = insert(idd,hid); //previous node of newly added f**king node
 		if (!temp)  return; 
-
-		for (int i = 1; ((stoi(temp->id) + i) % max) != (stoi(temp->next->id)+1);i++)
+		AvlNode<Type, Type1>* node;
+		//for (int i = 1; ((temp->id + i) % max) != (temp->next->id+1);i++)
 		{
-			AvlNode<Type>* node = new AvlNode<Type>;
+			node = new AvlNode<Type, Type1>;
 			
 			while (node) {
 				node = NULL;
-				node = temp->next->next->Tree.Delete(&(temp->next->next->Tree.root),(stoi(temp->id)+i)%max);
-				temp->next->next->Tree.dele = NULL;
-				if (node != NULL) temp->next->Tree.Insert(node,&(temp->next->Tree.root));
-				
+				node = temp->next->next->Tree.Delete_Mach(temp->next->id,(temp->id+1)%max);
+				//temp->next->next->Tree.dele = NULL;
+				if (node != NULL) temp->next->Tree.Insert(node,&(temp->next->Tree.root));				
 			}
 		}	
 	}
 
 
-	Machine<Type>* insert(Type idd, Type hid)
+	Machinee<Type, Type1>* insert(Type1 idd, Type1 hid)	//Insert a Machine Node
 	{
 		if (!head)
 		{
-			head = new Machine<Type>;
+			head = new Machinee<Type, Type1>;
 			head->id = idd;
 			head->hashed_id = hid;
-			head->next = head; //count++;
+			head->next = head; //line++;
 			cout << "\n111\n";
+			machines++;
 			return NULL;
 		}
-		else if (stoi(head->id) > stoi(idd))	//enter 0 after 1
+		else if (head->id > idd)	//enter 0 after 1,2
 		{
-			Machine<Type>* temp = head;
+			Machinee<Type, Type1>* temp = head;
 			while (temp->next != head)
 				temp = temp->next;
 			
-			temp->next = new Machine<Type>;
+			temp->next = new Machinee<Type, Type1>;
 			//temp = temp->next;
 			temp->next->id = idd;
 			temp->next->hashed_id = hid;
 			temp->next->next = head;
 		
-			if (head->next == head)
+			if (head->next == head)	//enter 0 after 1
 				head->next = temp->next;
 			
 			head = temp->next;
 			cout << "\n222\n";
+			machines++;
 			return temp;
 		}
 		else
 		{
-			Machine<Type>* temp = head;
+			Machinee<Type, Type1>* temp = head;
 			while (temp->next != head)
 			{
-				if (stoi(temp->next->id) > stoi(idd))
+				if (temp->id == idd || temp->next->id == idd) 
+				{
+					cout << "\nCannot Enter Machine. Its already Present!"; return NULL;
+				}
+				if (temp->next->id > idd)
 					break;
 				else temp = temp->next;				
 			}
-			Machine<Type>* tempo = temp->next;
-			temp->next = new Machine<Type>;
+			Machinee<Type, Type1>* tempo = temp->next;
+			temp->next = new Machinee<Type, Type1>;
 			temp->next->id = idd;
 			temp->next->hashed_id = hid;
-			temp->next->next = tempo; //count++;
+			temp->next->next = tempo; //line++;
 			cout << "\n333\n";
+			machines++;
 			return temp;
 		}
-		lol++;
 	}
 
 
 
-	string Succ(string log) {
+	Type1 Succ(Type1 log) {
 	
 		if (head->id == log)
 			return head->id;
-		else {
+		else{
 
-			Machine<Type>* temp = head;
+			Machinee<Type, Type1>* temp = head;
 
-			while (stoi(temp->id) < stoi(log) && temp->next != head)
+			while (temp->id < log && temp->next != head)
 				temp = temp->next;
-			if (stoi(temp->id) >= stoi(log))
+			if (temp->id >= log)
 				return temp->id;
 			else 
 				return head->id;
 		}
 	}
 
-	void Ret(Machine<Type>* temp,string key) {
+	void Ret(Machinee<Type, Type1>* temp, Type1 key) {	//Find and Show Data
 		
 		if (!temp) return;
 		//cout << "\nMachine NO. " << temp->id << endl;
-		AvlNode<Type>* lo = temp->Tree.retrieve(key);
+		AvlNode<Type, Type1>* lo = temp->Tree.retrieve(key);
 		if (!lo) { cout << "\nNULL\n"; return; }
 		cout << "\n\n&&&&&&&&&&&&&&&===========Data============&&&&&&&&&&&&&&";
-		cout << "\ndata\t" << lo->data << '\n';	// left root right
-		cout << "path\t" << lo->path << '\n';	// left root right
-		cout << "Line no\t" << lo->line_no << '\n';	// left root right
-		cout << "mach\t" << lo->mach << '\n';	// left root right
-		cout << "key\t" << lo->key << '\n';	// left root right
+		cout << "\ndata\t"	<< lo->data		<< '\n';	// left root right
+		cout << "path\t"	<< lo->path		<< '\n';	// left root right
+		cout << "Line no\t" << lo->line_no	<< '\n';	// left root right
+		cout << "mach\t"	<< lo->mach		<< '\n';	// left root right
+		cout << "key\t"		<< lo->key		<< '\n';	// left root right
 
 		cout << "By File\n";
 
 		ifstream input;
-		string data;
+		Type data;
 		input.open(lo->path);
 		for (int i = 1; (!input.eof()); i++)
 		{
 			getline(input,data);
-			if (to_string(i) == lo->line_no) { cout << "\n data = " << data; break; }
+			if (i == lo->line_no) { cout << "\n data = " << data; break; }
 		}
 		input.close();
 	
 	}
 
-	void Search(Type key,int mac = 0) {
-		//cout << "\nmax = " << max ;
-		int log = stoi(key) % max;
-		log = stoi(Succ(to_string(log)));
-		//void* temp = head;
-		Machine<Type>* temp = head;
-		Node<Type>* tempo = temp->Fht.head;
+	void Search(Type1 key, Type1 mac = 0) {
+
+		Type1 log = (key) % max;
+		log = Succ(log);
+		Machinee<Type, Type1>* temp = head;
+		Node<Type, Type1>* tempo = temp->Fht.head;
 		//cout << endl << to_string(log) << endl;
 
 
 		while (1) {
-			//cout << "\nBund  mara";
+
 			//cout << "loop  " << to_string(log) << endl;
 			 //tempo = temp->Fht.head;
 			 cout << "\n\nMachine no =  " << temp->id;
 			 int i = 0;
-			 if (to_string(log) == temp->id) { cout << "\n=====1=======\n"; Ret(temp, key);  return; }
+			if (log == temp->id) { cout << "\n=====1=======\n"; Ret(temp, key);  return; }
 
-			else if (temp->id < to_string (log) && to_string(log) <= tempo->data) {	//p<e and e<=Ftp[1]
-				temp = static_cast<Machine<Type>*>(tempo->ptr); cout << "\n=====2=======\n"; Ret(temp,key); return;
-			}
-			
+			else if (temp->id < log && log <= tempo->data) {	//p<e and e<=Ftp[1]
+				temp = static_cast<Machinee<Type, Type1>*>(tempo->ptr); cout << "\n=====2=======\n"; Ret(temp,key); return;
+			}			
 			else
 			while (tempo) {
 				if (tempo->next != NULL)
-				if (tempo->data < to_string(log) && to_string(log) <= tempo->next->data )	//Ftp[j] < e < Ftp[j+1]
+				if (tempo->data < log && log <= tempo->next->data )	//Ftp[j] < e < Ftp[j+1]
 				{
 					cout << "\n=====3=======\n";
-					temp = static_cast<Machine<Type>*>(tempo->ptr);
+					temp = static_cast<Machinee<Type, Type1>*>(tempo->ptr);
 					break;
 				}
 				if (tempo->next == NULL)
 				{
 					cout << "\n=====4=======\n";
-					temp = static_cast<Machine<Type>*>(tempo->ptr);
+					temp = static_cast<Machinee<Type, Type1>*>(tempo->ptr);
 					break;
 				}
 				cout << "\ntempo\t" << i << "\n" ;
@@ -412,19 +396,19 @@ public:
 			 
 			if (to_string(log) == temp->id) { Ret(temp,key); return; }
 			else if (temp->id < to_string (log)   && to_string(log) <= tempo->data) {	//p<e and e<=Ftp[1]
-				temp = static_cast<Machine<Type>*>(tempo->ptr); Ret(temp,key); return;
+				temp = static_cast<Machine<string>*>(tempo->ptr); Ret(temp,key); return;
 			}
 			else 
 			while (tempo) {
 				if (tempo->next != NULL)
 				if (tempo->data < to_string(log) && to_string(log) <= tempo->next->data )	//Ftp[j] < e < Ftp[j+1]
 				{
-					temp = static_cast<Machine<Type>*>(tempo->ptr);
+					temp = static_cast<Machine<string>*>(tempo->ptr);
 					break;
 				}
 				if (tempo->next == NULL)
 				{
-					temp = static_cast<Machine<Type>*>(tempo->ptr);
+					temp = static_cast<Machine<string>*>(tempo->ptr);
 					break;
 				}
 				tempo = tempo->next;
@@ -436,17 +420,17 @@ public:
 
 	
 
-	void Set(int* arr, int id) {
+	void Set(Type1* arr, Type1 id) {
 
-		Machine<Type>* temp = head;
+		Machinee<Type, Type1>* temp = head;
 
-		for (int p = 0; p < lol; p++) {		//for every machine
+		for (int p = 0; p < machines; p++) {		//for every machine
 
 			for (int i = 1; i <= id; i++) {	//
-				string h = to_string((int(stoi(temp->id) + pow(2, i - 1))) % int(pow(2, id)));
+				Type1 h = (Type1(temp->id + pow(2, i - 1))) % Type1(pow(2, id));
 				
-				//Machine<Type>* loo = (Get_ptr(Succ(h)));
-				//LoL<Type>* lp = new Machine<Type>;
+				//Machine<string>* loo = (Get_ptr(Succ(h)));
+				//LoL<string>* lp = new Machine<string>;
 				//lp = loo;
 				//cout << "\nuirhfyref\n";
 				temp->Fht.insert(i, Succ(h), h , Get_ptr(Succ(h)));
@@ -459,24 +443,21 @@ public:
 
 	void display()
 	{
-		Machine<Type>* temp = head;
-
+		Machinee<Type, Type1>* temp = head;
+		if (!head) return;
 		do{
 			//temp->tree.display(temp->tree.root);
-			cout << "\n--------------------------\n";
-			cout << "\n\nsimple id " << temp->id << endl;
-			cout<< "hashed id " << temp->hashed_id << endl;
+			cout << "\n----------------------------------------------------------\n";
+			cout << "\nSimple id " << temp->id << "\tHashed id " << temp->hashed_id << endl;
 			cout << temp << endl;
 			temp->Tree.display(temp->Tree.root);
 			temp->Fht.display();
 
-
-			//cout << endl << endl;
 			temp = temp->next;
-		} while (temp->next != head);
-		cout << "\n--------------------------\n";
-		cout << "\n\nsimple id " << temp->id << endl;
-		cout << "hashed id " << temp->hashed_id << endl;
+		}while (temp->next != head);
+
+		cout << "\n----------------------------------------------------------\n";
+		cout << "\nSimple id " << temp->id << "\tHashed id " << temp->hashed_id << endl;
 		cout << temp << endl;
 		temp->Tree.display(temp->Tree.root);
 		temp->Fht.display();
@@ -485,15 +466,16 @@ public:
 
 	}
 
-	Machine<Type>* Get_ptr(string str) {
+	Machinee<Type, Type1>* Get_ptr(Type1 str) {
 
-		Machine<string>* temp = head;
-		while (temp) {
+		Machinee<Type, Type1>* temp = head;
+		bool b = 1;
+		while (temp!=head || b) {
+			b = 0;
 			if (temp->id == str) return temp;
 			temp = temp->next;
 		}
-
-		//return ;	
+	//return ;	
 	}
 
 
