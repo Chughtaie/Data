@@ -4,37 +4,40 @@
 #include <fstream>
 using namespace std;
 
-template<typename T>
+template<typename T,typename T1>
 class AvlNode {
 
 public:
 
 	T data;		//Foxxy
 	T path;		//file1
-	T line_no;	//line no
-	T key;		//foxxy ki hash
-	T mach;		//machine no.
+	T1 line_no;	//line no
+	T1 key;		//foxxy ki hash
+	T1 mach;		//machine no.
 
 
 	AvlNode* left;
 	AvlNode* right;
-	AvlNode() { left = right = NULL; data = "0"; path = line_no = key = ""; }
+	AvlNode() { left = right = NULL; data = path = "";  line_no = key = mach = 0; }
+	AvlNode(AvlNode* copy) { left = right = NULL; data = copy->data; path = copy->path;  line_no = copy->line_no; key = copy->key; mach = copy->mach; }
+	void Set(AvlNode* copy) {  data = copy->data; path = copy->path;  line_no = copy->line_no; key = copy->key; mach = copy->mach; }
 
 };
 
-template<typename T>
+template<typename T, typename T1>
 class AvlTree {
-
-
 
 
 public:
 
-	AvlNode<T>* root;
-	AvlNode<T>* dele;
+	AvlNode<T,T1>* root;
+	AvlNode<T,T1>* dele;
+	T1 key;
+
 	int height;
 	int lh = 0, rh = 0;
-	int h = 0, a = 0;
+	T1 h = 0, a = 0;
+	bool avail = 1;
 
 	AvlTree() {
 
@@ -43,10 +46,11 @@ public:
 
 	}
 
-	AvlNode<T>* getRoot()
+	AvlNode<T, T1>* getRoot()
 	{
 		return root;
 	}
+
 	int R_H() {
 		h = 0, a = 0;
 		Height(root);
@@ -54,7 +58,7 @@ public:
 		return 1;
 	}
 
-	int balanceFactor(AvlNode<T>* r) {
+	int balanceFactor(AvlNode<T, T1>* r) {
 
 		if (!root)
 			return -1;
@@ -69,7 +73,7 @@ public:
 		return (lh - rh);
 	}
 
-	void Height(AvlNode<T>* temp)
+	void Height(AvlNode<T, T1>* temp)
 	{
 		if (root == NULL || temp == NULL)
 			return;
@@ -97,9 +101,9 @@ public:
 		return;
 	}
 
-	void RR(AvlNode<T>** temp) {
+	void RR(AvlNode<T, T1>** temp) {
 		//cout << "\tRR\n";
-		AvlNode<T>* ch;					// 4-3-5
+		AvlNode<T, T1>* ch;					// 4-3-5
 		ch = (*temp)->left;
 		(*temp)->left = ch->right;
 		ch->right = (*temp);
@@ -107,9 +111,9 @@ public:
 
 	}
 
-	void LL(AvlNode<T>** temp) {
+	void LL(AvlNode<T, T1>** temp) {
 		//cout << "\tLL\n";
-		AvlNode<T>* ch;
+		AvlNode<T, T1>* ch;
 		ch = (*temp)->right;
 		(*temp)->right = ch->left;
 		ch->left = (*temp);
@@ -118,14 +122,14 @@ public:
 
 	}
 
-	void Left(AvlNode<T>** temp) {
+	void Left(AvlNode<T, T1>** temp) {
 		//cout << "\nLeft";
 		LL(&((*temp)->left));
 		RR(temp);
 
 	}
 
-	void Right(AvlNode<T>** temp) {
+	void Right(AvlNode<T, T1>** temp) {
 
 		//cout << "\nRight";
 		RR(&((*temp)->right));
@@ -134,13 +138,13 @@ public:
 
 	}
 
-
-	void Insert(AvlNode<T>* number, AvlNode<T>** temp)
+	void Insert(AvlNode<T, T1>* number, AvlNode<T, T1>** temp)
 	{
 		//cout << "\nEntered\n";
+		if (number == NULL) return;
 		if (root == NULL)
 		{
-			(root) = new AvlNode<T>;
+			(root) = new AvlNode<T, T1>;
 			root = number;
 			*temp = root;
 			return;
@@ -202,45 +206,46 @@ public:
 		}
 	}
 
-	void display(AvlNode<T>* temp)  //traverse
+	void Show(AvlNode<T, T1>* temp) {
+	
+		cout << "\ndata	\t" << temp->data	<< '\t';	// left root right
+		cout << "path	\t" << temp->path	<< '\t';	// left root right
+		cout << "line no\t" << temp->line_no<< '\t';	// left root right
+		cout << "mach	\t" << temp->mach	<< '\t';	// left root right
+		cout << "key	\t" << temp->key	<< '\t';	// left root right		
+	}
+
+	void display(AvlNode<T, T1>* temp,T1 val=0)  //traverse
 	{
 		if (temp == NULL || root == NULL)
-		{
-			return;
-		}
+			return;		
 
-		cout << "\ndata\t" <<  temp->data << '\n';	// left root right
-		cout << "path\t" << temp->path << '\n';	// left root right
-		cout << "Line no\t" << temp->line_no << '\n';	// left root right
-		cout << "mach\t" << temp->mach << '\n';	// left root right
-		cout << "key\t" << temp->key << '\n';	// left root right
-		//cout << temp << endl;
+		if (val <= 0) Show(temp);	//Preorder
+
 		if (temp->left != NULL)
-		{
-			display(temp->left);    //LVR display
+			display(temp->left,val);    //LVR display
 
-		}
-
-		// cout << "\nSdfd\n";
+		if (val == 1) Show(temp);	//Inorder
 
 		if (temp->right != NULL)
-		{
-			display(temp->right);
-		}
+			display(temp->right, val);
+
+		if (val > 1)  Show(temp);	//PostOrder
+		
 
 	}
 
-	AvlNode<T>* retrieve(string d)
+	AvlNode<T, T1>* retrieve(T1 d)
 	{
-		AvlNode<T>* temp = root;
+		AvlNode<T, T1>* temp = root;
 
 		while (temp)
 		{
 			//cout << "str   " << stoi(temp->key) << "\t" << stoi(d) << endl;
-			if (stoi(temp->key) == stoi(d))
+			if (temp->key == d)
 				return temp;
 
-			if (stoi(d) > stoi(temp->key))
+			if (d > temp->key)
 				temp = temp->right;
 			else
 				temp = temp->left;
@@ -249,6 +254,7 @@ public:
 		return NULL;
 	}
 
+	/*
 	int MAXHeight()
 	{
 		lh = rh = 0;
@@ -258,8 +264,8 @@ public:
 			return 0;
 		}
 
-		AvlNode<T>* templ = root->left;
-		AvlNode<T>* tempr = root->right;
+		AvlNode<T, T1>* templ = root->left;
+		AvlNode<T, T1>* tempr = root->right;
 		while (templ)
 		{
 			if (templ->left)
@@ -286,31 +292,29 @@ public:
 
 
 	}
+	*/
 
-
-	AvlNode<T>* minimum(AvlNode<T>* min)
+	AvlNode<T, T1>* minimum(AvlNode<T, T1>* min)
 	{
-		
-
-		while (min && min->left != NULL)
+		if(min)
+		while (min->left)
 			min = min->left;
-
 		return min;
 	}
 
-	void Bal(AvlNode<T>** temp,T number) {
+	void Bal(AvlNode<T, T1>** temp,T1 number) {
 	
 		if (!(*temp)) return;
 
 		if (balanceFactor(*temp) == 2) { //5-3-4
-			if (number > (*temp)->left->data) // 5-4-3
+			if (number > (*temp)->left->key) // 5-4-3
 				RR(temp);
 			else
 				Left(temp);
 		}
 		else
 		if (balanceFactor(*temp) == -2) { //5-3-4
-				if (number < (*temp)->right->data) // 5-4-3
+				if (number < (*temp)->right->key) // 5-4-3
 					LL(temp);
 				else
 					Right(temp);
@@ -318,49 +322,52 @@ public:
 			}	
 	}
 
-	T key;
-	void Search(AvlNode<T>* temp,int mac)  //traverse
+	//==========special search===========//
+	void Search(AvlNode<T, T1>* temp, T1 mac, T1 mac2)  //traverse
 	{
 		if (temp == NULL || root == NULL)
-		{
 			return;
-		}
-		if (to_string(mac) == temp->mach) key = temp->key;
-		if (temp->left != NULL)
-		{
-			display(temp->left);    //LVR display
+		if (temp->mach <= mac && key == -1) key = temp->key;
+		if (temp->mach >= mac2 && mac2 != -1 && key == -1) key = temp->key;
 
-		}
-		if (to_string(mac) == temp->mach) key = temp->key;
-		// cout << "\nSdfd\n";
+		if (temp->left != NULL)
+			Search(temp->left, mac, mac2);    //LVR display
 
 		if (temp->right != NULL)
-		{
-			display(temp->right);
-		}
-		if (to_string(mac) == temp->mach) key = temp->key;
+			Search(temp->right, mac, mac2);
 
 	}
 
-
-	AvlNode<T>* Delete(AvlNode<T>** temp, int n) {
-		Search(*temp,n);
-		del(temp,stoi(key));
+	AvlNode<T, T1>* Delete_Mach(T1 mach, T1 mac2 = -1) {
+		//AvlNode<T, T1>* temp = (root);
+		dele = NULL;
+		key = -1;
+		Search(root, mach, mac2);
+		cout << key;
+		//if(key!=-1)
+		Delete(&root, key);
+		if (dele) {
+	
+			dele->right = NULL;		
+			dele->left = NULL;
+		}
 		return dele;
 	}
 
-	AvlNode<T>* del(AvlNode<T>** temp, int n) {
+	AvlNode<T, T1>* Delete(AvlNode<T, T1>** temp, T1 n) {
 		if (*temp == NULL )
 			return *temp;
-		if (n > stoi((*temp)->key))
+		if (n > (*temp)->key)
 		{
-			(*temp)->right = del(&((*temp)->right), n);	//
-			//Bal(&((*temp)->right),to_string(n));
+			//(*temp)->right = 
+			Delete(&((*temp)->right), n);	//
+			Bal(&((*temp)),n);
 		}
-		else if (stoi((*temp)->key) > n)
+		else if ((*temp)->key > n)
 		{
-			(*temp)->left = del(&((*temp)->left), n);	//
-			//Bal(&((*temp)->left), to_string(n));
+			//(*temp)->left = 
+			Delete(&((*temp)->left), n);	//
+			Bal(&((*temp)), n);
 		}
 		else {
 			if ((*temp)->left == NULL && (*temp)->right == NULL) {
@@ -373,6 +380,7 @@ public:
 			}
 			else if ((*temp)->left == NULL) {
 				//AvlNode<T>* temp1 = *temp;
+				if (!dele)
 				dele = *temp; 
 				*temp = (*temp)->right;
 				//return temp1;
@@ -380,6 +388,7 @@ public:
 			}
 			else if ((*temp)->right == NULL) {
 				//AvlNode<T>* temp1 = *temp;
+				if(!dele)
 				dele = *temp;
 				*temp = (*temp)->left;				
 				//return temp1;
@@ -387,18 +396,20 @@ public:
 
 			}
 			else { //case  3
-				AvlNode<T>* temp1 = minimum((*temp)->right);
-				(*temp)->data = temp1->data;
-				(*temp)->mach = temp1->mach;
-				(*temp)->key = temp1->key;
-				(*temp)->path = temp1->path;
-				(*temp)->line_no = temp1->line_no;
-				//temp->right = 
-				(*temp)->right = del(&((*temp)->right), stoi(temp1->key));
-
+				if (!dele)
+					dele = new AvlNode<T,T1>(*temp);
+				AvlNode<T, T1>* temp1 = minimum((*temp)->right);		
+				(*temp)->Set(temp1);
+				/*(*temp)->data	= temp1->data;
+				(*temp)->mach	= temp1->mach;
+				(*temp)->key	= temp1->key;
+				(*temp)->path	= temp1->path;
+				(*temp)->line_no= temp1->line_no;
+				*/
+				//(*temp)->right	=
+				Delete(&((*temp)->right),temp1->key);
 			}
 		}
-
 		return *temp;
 	}
 };
@@ -407,7 +418,7 @@ public:
 
 
 
-/*AvlNode<T>* del(AvlNode<T>* temp, int val)
+/*AvlNode<T>* Delete(AvlNode<T>* temp, int val)
 {
 	cout << "\ndel\n";
 	if (root == NULL || temp==NULL)
@@ -416,11 +427,11 @@ public:
 	}
 	else if (temp->data > val)
 	{
-		temp->left = del(temp->left, val);
+		temp->left = Delete(temp->left, val);
 	}
 	else if (temp->data < val)
 	{
-		temp->right = del(temp->right, val);
+		temp->right = Delete(temp->right, val);
 	}
 	else
 	{
@@ -446,7 +457,7 @@ public:
 		{
 			AvlNode<T>* det = minimum(temp->right);
 			temp->data = det->data;
-			temp->right = del(temp->right, det->data);
+			temp->right = Delete(temp->right, det->data);
 		}
 	}
 	return temp;
