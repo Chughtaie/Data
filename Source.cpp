@@ -223,7 +223,10 @@ void menu(Ring_DHT<T, U>& obj, int p,int *arr,int idspace) {
 
 	
 	while (inp != "-1") {
-		cout << endl << endl<<"\t\tMENU\n";
+		cout << "\033[2J\033[1;1H";
+
+
+		cout << endl<<"\t\tMENU\n";
 		cout << "Press 5 to insert data in the form of key, value pairs from any machine" << endl;
 		cout << "Press 6 to remove data by specifying the key from any machine" << endl;
 		cout << "Press 7 to print the AVL tree maintain on any machine along with the location of files\n";
