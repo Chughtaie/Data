@@ -246,7 +246,7 @@ public:
 
 		while (temp)
 		{
-			//cout << "str   " << stoi(temp->key) << "\t" << stoi(d) << endl;
+			//cout << "str   " << temp->key << "\t" << d << endl;
 			if (temp->key == d)
 				return temp;
 
