@@ -209,6 +209,7 @@ public:
 			head->Add(var);
 			return true;
 		}
+
 		else {
 		
 			Machinee<Type, Type1>* temp = head;
@@ -224,7 +225,7 @@ public:
 	}
 	
 	
-
+	/*
 	void Add_Machine(Type1 idd, Type1 hid) {		//Add MAchine and Settle it.
 	
 		Machinee<Type, Type1>* temp = insert(idd,hid); //previous node of newly added f**king node
@@ -241,6 +242,130 @@ public:
 				if (node != NULL) temp->next->Tree.Insert(node,&(temp->next->Tree.root));				
 			}
 		}	
+	}*/
+
+	void Add_Machine(Type1 idd, Type1 hid) {
+
+		Machinee<Type, Type1>* temp = new Machinee < Type, Type1 >;
+
+		temp->id = idd;	temp->hashed_id = hid;
+		//Machinee<Type, Type1>* temp = insert(idd, hid);
+
+		Machinee<Type, Type1>* temp1 = head;
+
+		while (temp1->id < idd)
+		{						//9
+			temp1 = temp1->next;
+			if (temp1 == head)
+			break;
+		}
+
+		AvlNode<Type, Type1>* node = temp1->Tree.root;
+		temp1->Tree.root = NULL;
+		temp1->file_no = NULL;
+		temp1->line = NULL;
+		
+		temp1 = head;
+
+		while (temp1->next->id < idd)
+		{
+			temp1 = temp1->next;	//5
+			if (temp1->next == head)
+				break;
+		}
+
+		temp->next = temp1->next;
+		temp1->next = temp;
+
+
+
+		machines++;
+
+		temp1 = head;
+
+		for (int i = 0; i < machines; i++)
+		{
+			temp1->Fht.head = NULL;
+			temp1 = temp1->next;
+		}
+
+		go(node);
+		
+	}
+
+
+	void go(AvlNode<Type, Type1>* temp, Type1 val = 0)  //traverse
+	{
+		if (temp == NULL )
+			return;
+
+		if (val <= 0) Add(temp);	//Preorder
+
+		if (temp->left != NULL)
+			go(temp->left, val);    //LVR display
+
+		if (val == 1) Add(temp);	//Inorder
+
+		if (temp->right != NULL)
+			go(temp->right, val);
+
+		if (val > 1)  Add(temp);	//PostOrder
+
+
+	}
+
+	void delete_machine(Type1 idd)
+	{
+		Machinee<Type, Type1>* temp1 = head;
+		bool check = 1;
+		Machinee<Type, Type1>* temp;
+		while (1)
+		{
+			if (temp1->id == idd)			//7
+				break;
+
+			temp1 = temp1->next;
+
+			if(temp1==head)
+			{
+				cout << "this id doesn't exit\n"; check = 0; break;
+			}
+		}
+
+		if (check)
+		{
+			AvlNode<Type, Type1>* node = temp1->Tree.root;
+			temp1->Tree.root = NULL;
+			temp1->file_no = NULL;
+			temp1->line = NULL;
+			
+			temp = head;
+
+			while (1)
+			{
+				if (temp->next->id == idd)			//5
+					break;					
+				temp = temp->next;
+			}
+			
+			temp->next = temp1->next; temp1 = NULL;
+
+			machines--;
+
+			temp1 = head;
+
+			for (int i = 0; i < machines; i++)
+			{
+				temp1->Fht.head = NULL;
+				temp1 = temp1->next;
+			}
+
+			go(node);
+
+		}
+
+
+
 	}
 
 
@@ -450,7 +575,7 @@ public:
 			cout << "\n----------------------------------------------------------\n";
 			cout << "\nSimple id " << temp->id << "\tHashed id " << temp->hashed_id << endl;
 			cout << temp << endl;
-			temp->Tree.display(temp->Tree.root);
+			temp->Tree.display(temp->Tree.root,temp->id);
 			temp->Fht.display();
 
 			temp = temp->next;
@@ -459,7 +584,7 @@ public:
 		cout << "\n----------------------------------------------------------\n";
 		cout << "\nSimple id " << temp->id << "\tHashed id " << temp->hashed_id << endl;
 		cout << temp << endl;
-		temp->Tree.display(temp->Tree.root);
+		temp->Tree.display(temp->Tree.root, temp->id);
 		temp->Fht.display();
 		cout << endl << endl;
 		//temp->tree.display(temp->tree.root);
