@@ -207,7 +207,7 @@ public:
 	}
 
 	void Show(AvlNode<T, T1>* temp) {
-	
+			
 		cout << "\ndata	\t" << temp->data	<< '\t';	// left root right
 		cout << "path	\t" << temp->path	<< '\t';	// left root right
 		cout << "line no\t" << temp->line_no<< '\t';	// left root right
@@ -219,18 +219,23 @@ public:
 	{
 		if (temp == NULL || root == NULL)
 			return;		
+		T str = "";
+		str = temp->path[17];str+= temp->path[18];
+		T1 s = stoi(str);
+		if (val <= 0  && (temp->path[17] == val + 48 || ((s) == (val ))))
+			Show(temp);	//Preorder
 
-		if (val <= 0) Show(temp);	//Preorder
-
-		if (temp->left != NULL)
+		if (temp->left != NULL) 
 			display(temp->left,val);    //LVR display
 
-		if (val == 1) Show(temp);	//Inorder
+		if (val == 1  && (temp->path[17] == val + 48 || ( (s) == (val) )  ) )
+			Show(temp);	//Inorder
 
 		if (temp->right != NULL)
 			display(temp->right, val);
 
-		if (val > 1)  Show(temp);	//PostOrder
+		if (val > 1  && (temp->path[17] == val + 48 || ( (s) == (val ) ) ) )
+			Show(temp);	//PostOrder
 		
 
 	}
