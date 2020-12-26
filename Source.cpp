@@ -261,8 +261,69 @@ int main()
 	{
 		std::getline(cin, s);
 		system_mach.Add_Machine(stoi(s), Hash(s));
+		int* arr1 = new int[p + 1];
+
+		for (int i = 0; i < p; i++)
+			arr1[i] = arr[i];
+
+		arr1[p] = stoi(s);
+
+		for (int i = 0; i < p; i++)
+		{
+
+			for (int j = i + 1; j < p; j++)
+			{
+				if (arr1[i] > arr1[j])
+				{
+					tempo = arr1[i];
+					arr1[i] = arr1[j];
+					arr1[j] = tempo;
+				}
+			}
+		}
+
+		system_mach.Set(arr1, idspace);
 	}
 	system_mach.display();
+
+
+	cout << "\nEnter 1 to delete a machINe!!\n";
+	std::getline(cin, s);
+	if (s == "1")
+	{
+		cout<< "\nEnter simple id of machine to be deleted\n";
+		std::getline(cin, s);
+
+		system_mach.delete_machine(stoi(s));
+		int* arr1 = new int[p - 1];
+		int k = 0;
+		for (int i = 0; i < p - 1; i++)
+		{
+			if (arr[i] != stoi(s))
+			{
+				arr1[k] = arr[i]; k++;
+			}
+		}
+		
+		for (int i = 0; i < p; i++)
+		{
+
+			for (int j = i + 1; j < p; j++)
+			{
+				if (arr1[i] > arr1[j])
+				{
+					tempo = arr1[i];
+					arr1[i] = arr1[j];
+					arr1[j] = tempo;
+				}
+			}
+		}
+
+		system_mach.Set(arr1, idspace);
+	}
+	system_mach.display();
+
+
 
 
 	//=========		Inputs of Strings	 ==============
