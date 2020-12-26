@@ -109,12 +109,12 @@ string Machine(string val, string max) {
 	return to_string(stoi(val) % stoi(max));
 }
 
-
+//---------------------------MENU---------------------------------------------------
 
 template<class T, class U>
 void datastorage(Ring_DHT<T, U>& obj,int p) {
 	string s = " ";
-	cout << "\nEnter The shit you want to store!!\n";
+	cout << "\nEnter data you want to store....\n";
 	std::getline(cin, s);
 	AvlNode<string, int>* var = new AvlNode<string, int>;
 	var->data = s;
@@ -203,13 +203,68 @@ void machineremoval(Ring_DHT<T, U>& obj, int p, int* arr, int idspace) {
 
 }
 
+template<class T, class U>
+void printAVL(Ring_DHT<T, U>& obj,int idd)
+{
+	Machinee<T, U>* temp = obj.head;
+	bool check = 1;
+	while (temp->id != idd)
+	{
+		temp = temp->next;
+
+		if (temp == NULL)
+		{cout << "id not found\n"; check = 0; break;}
+	}
+	if(check)
+		temp->Tree.display(temp->Tree.root, temp->id);
 
 
+}
 
 
+template<class T, class U>
+void printroutingtabble(Ring_DHT<T, U>& obj, int idd)
+{
+	Machinee<T, U>* temp = obj.head;
+	bool check = 1;
+	while (temp->id != idd)
+	{
+		temp = temp->next;
 
+		if (temp == NULL)
+		{
+			cout << "id not found\n"; check = 0; break;
+		}
+	}
+	if (check)
+		temp->Fht.display();
+}
 
+template<class T, class U>
+void dataremoval(Ring_DHT<T, U>& obj)
+{
+	string s = "";
+	cout << "Enter the data you want to be removed : ";
+	getline(cin, s);
+	bool check = 0;
+	Machinee<T, U>* temp = obj.head;
+	
 
+	while (temp)
+	{
+		AvlNode<T, U>* temp1 = temp->Tree.retrieve(Hash(s));
+
+		if (temp1) {
+			check = 1; break;
+		}
+		temp = temp->next;
+	}
+	if (check)
+		temp->Tree.Delete(&(temp->Tree.root), Hash(s));
+	else
+		cout << "data not present\n";
+
+}
 template <class T, class U>
 void menu(Ring_DHT<T, U>& obj, int p,int *arr,int idspace) {
 	string inp = "";
@@ -244,21 +299,26 @@ void menu(Ring_DHT<T, U>& obj, int p,int *arr,int idspace) {
 		}
 		if (inp == "6") //remove data
 		{
-
+			
+			dataremoval(obj);
+			obj.display();
 
 		}
 
 		if (inp == "7") //print AVL Tree
 		{
-			//string s = "";
-			//cout << "Enter the machine id for which AVL Tree you want to be printed : ";
-			//getline(cin, s);
-			//printAVL();
+			string s = "";
+			cout << "Enter the machine id for which AVL Tree you want to be printed : ";
+			getline(cin, s);
+			printAVL(obj,stoi(s));
 		}
 
 		if (inp == "8")//print routing table of any machine
 		{
-			//printroutingtabble();
+			string s = "";
+			cout << "Enter the machine id for which routing table you want to be printed : ";
+			getline(cin, s);
+			printroutingtabble(obj,stoi(s));
 
 		}
 
