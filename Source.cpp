@@ -8,7 +8,6 @@
 
 
 
-
 string  word(string str, int o, int p = -1) {
 
 	if (p == -1 || p == o || p > 8 || p < o) p = o + 1;
@@ -112,6 +111,178 @@ string Machine(string val, string max) {
 
 
 
+template<class T, class U>
+void datastorage(Ring_DHT<T, U>& obj,int p) {
+	string s = " ";
+	cout << "\nEnter The shit you want to store!!\n";
+	std::getline(cin, s);
+	AvlNode<string, int>* var = new AvlNode<string, int>;
+	var->data = s;
+	var->key = Hash(s);
+	var->mach = (var->key % p);
+	//cout << var->mach << "\t" << var->key << "\t" << n << endl;;
+	obj.Add(var);
+}
+
+template<class T, class U>
+void searchingg(Ring_DHT<T, U>& obj) {
+	string s = " ";
+	cout << "\nEnter The search!!\n";
+	std::getline(cin, s);
+	if (s != "-1")
+		obj.Search(Hash(s));
+
+}
+
+
+template<class T, class U>
+void flyingmachine(Ring_DHT<T, U>& obj, int p,int *arr,int idspace) {
+	string s = "";	int tempo;
+
+	cout << "Enter the machine id : ";
+	std::getline(cin, s);
+	obj.Add_Machine(stoi(s), Hash(s));
+	int* arr1 = new int[p + 1];
+
+	for (int i = 0; i < p; i++)
+		arr1[i] = arr[i];
+
+	arr1[p] = stoi(s);
+
+	for (int i = 0; i < p; i++)
+	{
+
+		for (int j = i + 1; j < p; j++)
+		{
+			if (arr1[i] > arr1[j])
+			{
+				tempo = arr1[i];
+				arr1[i] = arr1[j];
+				arr1[j] = tempo;
+			}
+		}
+	}
+
+	obj.Set(arr1, idspace);
+
+}
+
+
+template<class T, class U>
+void machineremoval(Ring_DHT<T, U>& obj, int p, int* arr, int idspace) {
+	string s = ""; int tempo;
+	cout << "\nEnter simple id of machine to be deleted\n";
+	std::getline(cin, s);
+
+	obj.delete_machine(stoi(s));
+	int* arr1 = new int[p - 1];
+	int k = 0;
+	for (int i = 0; i < p - 1; i++)
+	{
+		if (arr[i] != stoi(s))
+		{
+			arr1[k] = arr[i]; k++;
+		}
+	}
+
+	for (int i = 0; i < p; i++)
+	{
+
+		for (int j = i + 1; j < p; j++)
+		{
+			if (arr1[i] > arr1[j])
+			{
+				tempo = arr1[i];
+				arr1[i] = arr1[j];
+				arr1[j] = tempo;
+			}
+		}
+	}
+
+	obj.Set(arr1, idspace);
+
+}
+
+
+
+
+
+
+
+
+template <class T, class U>
+void menu(Ring_DHT<T, U>& obj, int p,int *arr,int idspace) {
+	string inp = "";
+
+	/*cout << "Press 1 to enter the number of machines" << endl;
+	cout << "Press 2 to enter the identifier space" << endl;
+	cout << "Press 3 to manually assign the machine ids" << endl;
+	cout << "Press 4 to automatically assign the machine ids" << endl;*/
+	
+
+
+	
+	while (inp != "-1") {
+		cout << endl << endl<<"\t\tMENU\n";
+		cout << "Press 5 to insert data in the form of key, value pairs from any machine" << endl;
+		cout << "Press 6 to remove data by specifying the key from any machine" << endl;
+		cout << "Press 7 to print the AVL tree maintain on any machine along with the location of files\n";
+		cout << "Press 8 to print the routing table of any machine\n";
+		cout << "Press 9 to add new machine\n";
+		cout << "Press 10 to remove a machine\n";
+		cout << "Press 11 to search any id\n";
+		cout << "Press -1 to EXIT\n";
+		std::getline(cin, inp);
+		if (inp == "5")//insert data
+		{
+
+			datastorage(obj, p);
+			obj.display();
+		}
+		if (inp == "6") //remove data
+		{
+
+
+		}
+
+		if (inp == "7") //print AVL Tree
+		{
+			//string s = "";
+			//cout << "Enter the machine id for which AVL Tree you want to be printed : ";
+			//getline(cin, s);
+			//printAVL();
+		}
+
+		if (inp == "8")//print routing table of any machine
+		{
+			//printroutingtabble();
+
+		}
+
+		if (inp == "9") //add new machine on fly
+		{
+			flyingmachine(obj, p, arr, idspace);
+
+		}
+
+		if (inp == "10") //remove any machine
+		{
+			machineremoval(obj, p, arr, idspace);
+
+		}
+
+		if (inp == "11") // searching
+		{
+			searchingg(obj);
+		}
+	}
+
+
+}
+
+
+
+
 int main()
 {
 	srand(time(0));
@@ -120,13 +291,14 @@ int main()
 	int n = 0, idspace = 0;
 	string no = "2";
 
-
-	cout << "enter number of machines\n";
+//START UP MESSAGE
+	cout << "\t\tWELCOME TO THE DISTRIBUTED NETWORK\n" << endl;
+	cout << "Enter number of Machines initially : ";
 	getline(cin, no);
 	n = stoi(no);
 	no = "2";
 
-	cout << "enter identifier space\n";
+	cout << "Enter identifier space : ";
 	getline(cin, no);
 	cout << "\n\n";
 	idspace = stoi(no);
@@ -229,33 +401,32 @@ int main()
 	system_mach.Set(arr, idspace);
 
 
+	menu(system_mach, p,arr,idspace);
 
 
 
-
-	//string s = " ";
 	string s = " ";
-	while (1) {
-		cout << "\nEnter The shit you want to store!!\n";
-		std::getline(cin, s);
-		if (s == "-1") break;
-		AvlNode<string, int>* var = new AvlNode<string, int>;
+//	string s = " ";
+	//while (1) {
+		//cout << "\nEnter The shit you want to store!!\n";
+		//std::getline(cin, s);
+		//if (s == "-1") break;
+		/*AvlNode<string, int>* var = new AvlNode<string, int>;
 		var->data = s;
 		var->key = Hash(s);
 		var->mach = (var->key%p);
-		//cout << var->mach << "\t" << var->key << "\t" << n << endl;;
 		system_mach.Add(var);
-		//var.
-	}
-	system_mach.display();
+		*/
+	//}
+	//system_mach.display();
 
 
-	cout << "\nEnter The search!!\n";
+	/*cout << "\nEnter The search!!\n";
 	std::getline(cin, s);
 	if (s != "-1")
-		system_mach.Search(Hash(s));
+		system_mach.Search(Hash(s));*/
 
-	cout << "\nEnter 1 to ENter a machINe!!\n";
+	/*cout << "\nEnter 1 to ENter a machINe!!\n";
 	std::getline(cin, s);
 	if (s != "-1")
 	{
@@ -284,10 +455,10 @@ int main()
 
 		system_mach.Set(arr1, idspace);
 	}
-	system_mach.display();
+	system_mach.display();*/
 
 
-	cout << "\nEnter 1 to delete a machINe!!\n";
+	/*cout << "\nEnter 1 to delete a machINe!!\n";
 	std::getline(cin, s);
 	if (s == "1")
 	{
@@ -321,7 +492,7 @@ int main()
 
 		system_mach.Set(arr1, idspace);
 	}
-	system_mach.display();
+	system_mach.display();*/
 
 
 
