@@ -236,30 +236,47 @@ public:
 		temp1->file_no = NULL;
 		temp1->line = NULL;
 		
-		temp1 = head;
-
-		while (temp1->next->id < idd)
+		if (temp1 != head)
 		{
-			temp1 = temp1->next;	//5
-			if (temp1->next == head)
-				break;
+			temp1 = head;
+
+			while (temp1->next->id < idd)
+			{
+				temp1 = temp1->next;	//5
+				if (temp1->next == head)
+					break;
+			}
+
+			temp->next = temp1->next;
+			temp1->next = temp;
+
+
+			machines++;
+
+			temp1 = head;
+
+			for (int i = 0; i < machines; i++)
+			{
+				temp1->Fht.head = NULL;
+				temp1 = temp1->next;
+			}
 		}
+		else {
+			while (temp1->next != head)
+				temp1 = temp1->next;
 
-		temp->next = temp1->next;
-		temp1->next = temp;
+			temp->next = head;
+			temp1->next = temp;
+			head = temp;
+			machines++;
+			temp1 = head;
 
-
-
-		machines++;
-
-		temp1 = head;
-
-		for (int i = 0; i < machines; i++)
-		{
-			temp1->Fht.head = NULL;
-			temp1 = temp1->next;
+			for (int i = 0; i < machines; i++)
+			{
+				temp1->Fht.head = NULL;
+				temp1 = temp1->next;
+			}
 		}
-
 		go(node);
 		
 	}
@@ -310,27 +327,49 @@ public:
 			temp1->file_no = NULL;
 			temp1->line = NULL;
 			
-			temp = head;
-
-			while (1)
+			if (temp1 != head)
 			{
-				if (temp->next->id == idd)			//5
-					break;					
-				temp = temp->next;
+				temp = head;
+
+				while (1)
+				{
+					if (temp->next->id == idd)			//5
+						break;
+					temp = temp->next;
+				}
+
+				temp->next = temp1->next; temp1 = NULL;
+
+				machines--;
+
+				temp1 = head;
+
+				for (int i = 0; i < machines; i++)
+				{
+					temp1->Fht.head = NULL;
+					temp1 = temp1->next;
+				}
 			}
-			
-			temp->next = temp1->next; temp1 = NULL;
-
-			machines--;
-
-			temp1 = head;
-
-			for (int i = 0; i < machines; i++)
+			else
 			{
-				temp1->Fht.head = NULL;
-				temp1 = temp1->next;
-			}
+				temp = head;
 
+				while (1)
+				{
+					if (temp->next->id == idd)			//5
+						break;
+					temp = temp->next;
+				}
+				temp->next = head->next;
+				head = temp->next;
+				temp1 = head;
+				machines--;
+				for (int i = 0; i < machines; i++)
+				{
+					temp1->Fht.head = NULL;
+					temp1 = temp1->next;
+				}
+			}
 			go(node);
 
 		}
@@ -345,7 +384,6 @@ public:
 			head->id = idd;
 			head->hashed_id = hid;
 			head->next = head; //line++;
-			cout << "\n111\n";
 			machines++;
 			return NULL;
 		}
@@ -387,7 +425,6 @@ public:
 			temp->next->id = idd;
 			temp->next->hashed_id = hid;
 			temp->next->next = tempo; //line++;
-			cout << "\n333\n";
 			machines++;
 			return temp;
 		}
@@ -417,7 +454,7 @@ public:
 		cout << "\nMachine NO. " << temp->id << endl;
 		AvlNode<Type, Type1>* lo = temp->Tree.retrieve(key);
 		if (!lo) { cout << "\nNULL\n"; return; }
-		cout << "\n\n&&&&&&&&&&&&&&&===========Data============&&&&&&&&&&&&&&";
+		cout << "\n\n=======================Data==============================";
 		cout << "\ndata\t"	<< lo->data		<< '\n';	// left root right
 		cout << "path\t"	<< lo->path		<< '\n';	// left root right
 		cout << "Line no\t" << lo->line_no	<< '\n';	// left root right
