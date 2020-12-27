@@ -122,12 +122,6 @@ public:
 
 };
 
-
-
-
-
-
-
 template<typename Type, typename Type1>
 class Machinee {
 
@@ -179,10 +173,6 @@ public:
 };
 
 
-
-
-
-
 template<typename Type, typename Type1>
 class Ring_DHT {
 
@@ -225,25 +215,6 @@ public:
 	}
 	
 	
-	/*
-	void Add_Machine(Type1 idd, Type1 hid) {		//Add MAchine and Settle it.
-	
-		Machinee<Type, Type1>* temp = insert(idd,hid); //previous node of newly added f**king node
-		if (!temp)  return; 
-		AvlNode<Type, Type1>* node;
-		//for (int i = 1; ((temp->id + i) % max) != (temp->next->id+1);i++)
-		{
-			node = new AvlNode<Type, Type1>;
-			
-			while (node) {
-				node = NULL;
-				node = temp->next->next->Tree.Delete_Mach(temp->next->id,(temp->id+1)%max);
-				//temp->next->next->Tree.dele = NULL;
-				if (node != NULL) temp->next->Tree.Insert(node,&(temp->next->Tree.root));				
-			}
-		}	
-	}*/
-
 	void Add_Machine(Type1 idd, Type1 hid) {
 
 		Machinee<Type, Type1>* temp = new Machinee < Type, Type1 >;
@@ -364,10 +335,7 @@ public:
 
 		}
 
-
-
 	}
-
 
 	Machinee<Type, Type1>* insert(Type1 idd, Type1 hid)	//Insert a Machine Node
 	{
@@ -426,7 +394,6 @@ public:
 	}
 
 
-
 	Type1 Succ(Type1 log) {
 	
 		if (head->id == log)
@@ -447,7 +414,7 @@ public:
 	void Ret(Machinee<Type, Type1>* temp, Type1 key) {	//Find and Show Data
 		
 		if (!temp) return;
-		//cout << "\nMachine NO. " << temp->id << endl;
+		cout << "\nMachine NO. " << temp->id << endl;
 		AvlNode<Type, Type1>* lo = temp->Tree.retrieve(key);
 		if (!lo) { cout << "\nNULL\n"; return; }
 		cout << "\n\n&&&&&&&&&&&&&&&===========Data============&&&&&&&&&&&&&&";
@@ -477,13 +444,11 @@ public:
 		log = Succ(log);
 		Machinee<Type, Type1>* temp = head;
 		Node<Type, Type1>* tempo = temp->Fht.head;
-		//cout << endl << to_string(log) << endl;
-
+		
 
 		while (1) {
 
-			//cout << "loop  " << to_string(log) << endl;
-			 //tempo = temp->Fht.head;
+			 tempo = temp->Fht.head;
 			 cout << "\n\nMachine no =  " << temp->id;
 			 int i = 0;
 			if (log == temp->id) { cout << "\n=====1=======\n"; Ret(temp, key);  return; }
@@ -515,35 +480,9 @@ public:
 
 		}
 		
-		//while(1){
-			//cout << "loop  " << to_string(log) << endl;
-			/* tempo = temp->Fht.head;
-			 
-			if (to_string(log) == temp->id) { Ret(temp,key); return; }
-			else if (temp->id < to_string (log)   && to_string(log) <= tempo->data) {	//p<e and e<=Ftp[1]
-				temp = static_cast<Machine<string>*>(tempo->ptr); Ret(temp,key); return;
-			}
-			else 
-			while (tempo) {
-				if (tempo->next != NULL)
-				if (tempo->data < to_string(log) && to_string(log) <= tempo->next->data )	//Ftp[j] < e < Ftp[j+1]
-				{
-					temp = static_cast<Machine<string>*>(tempo->ptr);
-					break;
-				}
-				if (tempo->next == NULL)
-				{
-					temp = static_cast<Machine<string>*>(tempo->ptr);
-					break;
-				}
-				tempo = tempo->next;
-			}	*/
-			//temp = temp->next;
-		//}
+		
 	}
-
-
-	
+		
 
 	void Set(Type1* arr, Type1 id) {
 
@@ -553,11 +492,6 @@ public:
 
 			for (int i = 1; i <= id; i++) {	//
 				Type1 h = (Type1(temp->id + pow(2, i - 1))) % Type1(pow(2, id));
-				
-				//Machine<string>* loo = (Get_ptr(Succ(h)));
-				//LoL<string>* lp = new Machine<string>;
-				//lp = loo;
-				//cout << "\nuirhfyref\n";
 				temp->Fht.insert(i, Succ(h), h , Get_ptr(Succ(h)));
 			}
 			temp = temp->next;
