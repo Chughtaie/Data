@@ -268,15 +268,7 @@ void dataremoval(Ring_DHT<T, U>& obj)
 template <class T, class U>
 void menu(Ring_DHT<T, U>& obj, int p,int *arr,int idspace) {
 	string inp = "";
-
-	/*cout << "Press 1 to enter the number of machines" << endl;
-	cout << "Press 2 to enter the identifier space" << endl;
-	cout << "Press 3 to manually assign the machine ids" << endl;
-	cout << "Press 4 to automatically assign the machine ids" << endl;*/
-	
-
-
-	
+		
 	while (inp != "-1") {
 		cout << "\033[2J\033[1;1H";
 
@@ -324,13 +316,13 @@ void menu(Ring_DHT<T, U>& obj, int p,int *arr,int idspace) {
 
 		if (inp == "9") //add new machine on fly
 		{
-			flyingmachine(obj, p, arr, idspace);
+			flyingmachine(obj, p, arr, idspace); obj.display();
 
 		}
 
 		if (inp == "10") //remove any machine
 		{
-			machineremoval(obj, p, arr, idspace);
+			machineremoval(obj, p, arr, idspace); obj.display();
 
 		}
 
@@ -342,8 +334,6 @@ void menu(Ring_DHT<T, U>& obj, int p,int *arr,int idspace) {
 
 
 }
-
-
 
 
 int main()
@@ -427,10 +417,6 @@ int main()
 
 	}
 
-
-
-
-
 	int tempo;
 
 	for (int i = 0; i < n; i++)
@@ -446,7 +432,7 @@ int main()
 			}
 		}
 	}
-
+	cout << "\nMachine ids are...\n ";
 	for (int i = 0; i < n; i++)
 		cout << arr[i] << endl;
 
@@ -465,103 +451,6 @@ int main()
 
 
 	menu(system_mach, p,arr,idspace);
-
-
-
-	string s = " ";
-//	string s = " ";
-	//while (1) {
-		//cout << "\nEnter The shit you want to store!!\n";
-		//std::getline(cin, s);
-		//if (s == "-1") break;
-		/*AvlNode<string, int>* var = new AvlNode<string, int>;
-		var->data = s;
-		var->key = Hash(s);
-		var->mach = (var->key%p);
-		system_mach.Add(var);
-		*/
-	//}
-	//system_mach.display();
-
-
-	/*cout << "\nEnter The search!!\n";
-	std::getline(cin, s);
-	if (s != "-1")
-		system_mach.Search(Hash(s));*/
-
-	/*cout << "\nEnter 1 to ENter a machINe!!\n";
-	std::getline(cin, s);
-	if (s != "-1")
-	{
-		std::getline(cin, s);
-		system_mach.Add_Machine(stoi(s), Hash(s));
-		int* arr1 = new int[p + 1];
-
-		for (int i = 0; i < p; i++)
-			arr1[i] = arr[i];
-
-		arr1[p] = stoi(s);
-
-		for (int i = 0; i < p; i++)
-		{
-
-			for (int j = i + 1; j < p; j++)
-			{
-				if (arr1[i] > arr1[j])
-				{
-					tempo = arr1[i];
-					arr1[i] = arr1[j];
-					arr1[j] = tempo;
-				}
-			}
-		}
-
-		system_mach.Set(arr1, idspace);
-	}
-	system_mach.display();*/
-
-
-	/*cout << "\nEnter 1 to delete a machINe!!\n";
-	std::getline(cin, s);
-	if (s == "1")
-	{
-		cout<< "\nEnter simple id of machine to be deleted\n";
-		std::getline(cin, s);
-
-		system_mach.delete_machine(stoi(s));
-		int* arr1 = new int[p - 1];
-		int k = 0;
-		for (int i = 0; i < p - 1; i++)
-		{
-			if (arr[i] != stoi(s))
-			{
-				arr1[k] = arr[i]; k++;
-			}
-		}
-		
-		for (int i = 0; i < p; i++)
-		{
-
-			for (int j = i + 1; j < p; j++)
-			{
-				if (arr1[i] > arr1[j])
-				{
-					tempo = arr1[i];
-					arr1[i] = arr1[j];
-					arr1[j] = tempo;
-				}
-			}
-		}
-
-		system_mach.Set(arr1, idspace);
-	}
-	system_mach.display();*/
-
-
-
-
-	//=========		Inputs of Strings	 ==============
-
 
 
 	return 0;
