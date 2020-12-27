@@ -9,10 +9,10 @@ class AvlNode {
 
 public:
 
-	T data;		//Foxxy
+	T data;		//Foxx
 	T path;		//file1
 	T1 line_no;	//line no
-	T1 key;		//foxxy ki hash
+	T1 key;		//foxx hash
 	T1 mach;		//machine no.
 
 
