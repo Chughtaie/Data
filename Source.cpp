@@ -290,7 +290,7 @@ void menu(Ring_DHT<T, U>& obj, int p,int *arr,int idspace) {
 			obj.display();
 		}
 		if (inp == "6") //remove data
-		{
+		{ 
 			
 			dataremoval(obj);
 			obj.display();
