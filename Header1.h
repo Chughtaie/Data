@@ -259,45 +259,6 @@ public:
 		return NULL;
 	}
 
-	/*
-	int MAXHeight()
-	{
-		lh = rh = 0;
-		if (root == NULL)
-		{
-			cout << "Empty tree\n";
-			return 0;
-		}
-
-		AvlNode<T, T1>* templ = root->left;
-		AvlNode<T, T1>* tempr = root->right;
-		while (templ)
-		{
-			if (templ->left)
-				templ = templ->left;
-			else
-				templ = templ->right;
-			lh++;
-
-		}
-		while (tempr)
-		{
-			if (tempr->left)
-				tempr = tempr->left;
-			else
-				tempr = tempr->right;
-			rh++;
-
-		}
-
-		if (lh > rh)
-			return lh;
-		else
-			return rh;
-
-
-	}
-	*/
 
 	AvlNode<T, T1>* minimum(AvlNode<T, T1>* min)
 	{
@@ -396,8 +357,7 @@ public:
 				if(!dele)
 				dele = *temp;
 				*temp = (*temp)->left;				
-				//return temp1;
-				//delete temp1;
+				
 
 			}
 			else { //case  3
@@ -405,65 +365,10 @@ public:
 					dele = new AvlNode<T,T1>(*temp);
 				AvlNode<T, T1>* temp1 = minimum((*temp)->right);		
 				(*temp)->Set(temp1);
-				/*(*temp)->data	= temp1->data;
-				(*temp)->mach	= temp1->mach;
-				(*temp)->key	= temp1->key;
-				(*temp)->path	= temp1->path;
-				(*temp)->line_no= temp1->line_no;
-				*/
-				//(*temp)->right	=
+				
 				Delete(&((*temp)->right),temp1->key);
 			}
 		}
 		return *temp;
 	}
 };
-
-
-
-
-
-/*AvlNode<T>* Delete(AvlNode<T>* temp, int val)
-{
-	cout << "\ndel\n";
-	if (root == NULL || temp==NULL)
-	{
-		return root;
-	}
-	else if (temp->data > val)
-	{
-		temp->left = Delete(temp->left, val);
-	}
-	else if (temp->data < val)
-	{
-		temp->right = Delete(temp->right, val);
-	}
-	else
-	{
-		if (temp->left == NULL && temp->right == NULL)
-		{
-			root = NULL;
-		}
-		else if (temp->left == NULL)
-		{
-			AvlNode<T>* det = temp;
-			temp = temp->right;
-			det = NULL;
-			delete det;
-		}
-		else if (temp->right == NULL)
-		{
-			AvlNode<T>* det = temp;
-			temp = temp->left;
-			det = NULL;
-			delete det;
-		}
-		else
-		{
-			AvlNode<T>* det = minimum(temp->right);
-			temp->data = det->data;
-			temp->right = Delete(temp->right, det->data);
-		}
-	}
-	return temp;
-}*/
